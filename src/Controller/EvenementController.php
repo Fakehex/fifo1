@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Evenement;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class EvenementController extends AbstractController
@@ -15,10 +16,14 @@ class EvenementController extends AbstractController
     public function index()
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $user1 = $entityManager->getRepository(User::class)->find(1);
+        $user2 = $entityManager->getRepository(User::class)->find(2);
 
         $event = new Evenement();
-        $event->setTitre("firstTry");
+        $event->setTitre("secondTry avec users");
         $event->setTexte("yeah body light weight");
+        $event->addParticipant($user1);
+        $event->addParticipant($user2);
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
         $entityManager->persist($event);
