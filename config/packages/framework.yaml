@@ -1,8 +1,5 @@
 framework:
-<<<<<<< 2a5e58c3a31dc961e5a49cdaaaf4751236799d9b
     validation: { enabled: true, enable_annotations: true }
-=======
->>>>>>> essai via linux
     secret: '%env(APP_SECRET)%'
     #default_locale: en
     #csrf_protection: true
