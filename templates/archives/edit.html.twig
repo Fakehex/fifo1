@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Archives{% endblock %}
+
+{% block body %}
+    <h1>Edit Archives</h1>
+
+    {{ include('archives/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('archives_index') }}">back to list</a>
+
+    {{ include('archives/_delete_form.html.twig') }}
+{% endblock %}

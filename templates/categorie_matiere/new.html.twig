@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CategorieMatiere{% endblock %}
+
+{% block body %}
+    <h1>Create new CategorieMatiere</h1>
+
+    {{ include('categorie_matiere/_form.html.twig') }}
+
+    <a href="{{ path('categorie_matiere_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Correction{% endblock %}
+
+{% block body %}
+    <h1>Edit Correction</h1>
+
+    {{ include('correction/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('correction_index') }}">back to list</a>
+
+    {{ include('correction/_delete_form.html.twig') }}
+{% endblock %}
