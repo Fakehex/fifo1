@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Correction{% endblock %}
+
+{% block body %}
+    <h1>Create new Correction</h1>
+
+    {{ include('correction/_form.html.twig') }}
+
+    <a href="{{ path('correction_index') }}">back to list</a>
+{% endblock %}
