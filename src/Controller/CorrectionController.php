@@ -9,9 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\FileUploader;
 
 /**
- * @Route("/correction")
+ * @Route("/admin/correction")
  */
 class CorrectionController extends AbstractController
 {
@@ -28,13 +29,19 @@ class CorrectionController extends AbstractController
     /**
      * @Route("/new", name="correction_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,FileUploader $fileUploader): Response
     {
         $correction = new Correction();
         $form = $this->createForm(CorrectionType::class, $correction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $correction->getCorrection();
+            $fileName = $fileUploader->upload($file);
+
+            $correction->setCorrection($fileName);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($correction);
             $entityManager->flush();
@@ -61,12 +68,18 @@ class CorrectionController extends AbstractController
     /**
      * @Route("/{id}/edit", name="correction_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Correction $correction): Response
+    public function edit(Request $request, Correction $correction, FileUploader $fileUploader): Response
     {
         $form = $this->createForm(CorrectionType::class, $correction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $correction->getSujet();
+            $fileName = $fileUploader->upload($file);
+
+            $correction->setCorrection($fileName);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('correction_index', [

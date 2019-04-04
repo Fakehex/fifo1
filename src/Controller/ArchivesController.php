@@ -9,11 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Service\FileUploader;
 
 /**
- * @Route("/archives")
+ * @Route("/admin/archives")
  */
 class ArchivesController extends AbstractController
 {
@@ -72,12 +71,18 @@ class ArchivesController extends AbstractController
     /**
      * @Route("/{id}/edit", name="archives_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Archives $archive): Response
+    public function edit(Request $request, Archives $archive,FileUploader $fileUploader): Response
     {
         $form = $this->createForm(ArchivesType::class, $archive);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $archive->getSujet();
+            $fileName = $fileUploader->upload($file);
+
+            $archive->setSujet($fileName);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('archives_index', [

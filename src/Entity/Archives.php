@@ -23,6 +23,11 @@ class Archives
      */
     private $sujet;
     /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Veuillez donner un titre")
+     */
+    private $titre;
+    /**
      * @ORM\Column(type="date", nullable=true)
      */
     private $date;
@@ -49,6 +54,15 @@ class Archives
     public function setSujet($sujet)
     {
         $this->sujet = $sujet;
+        return $this;
+    }
+    public function getTitre()
+    {
+        return $this->titre;
+    }
+    public function setTitre($titre)
+    {
+        $this->titre = $titre;
         return $this;
     }
     public function getDate(): ?\DateTimeInterface
