@@ -14,7 +14,7 @@
     <table class="table">
         {% for categorie in categories %}
             <tr>
-                <td><a href="{{ path('liste_matieres', {'id': categorie.id}) }}">{{categorie.titre}}</a></td>
+                <td><a href="{{ path('liste_matieres', {'slug': categorie.slug}) }}">{{categorie.titre}}</a></td>
             </tr>
         {% else %}
             <tr>

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatiereRepository")
@@ -25,6 +26,22 @@ class Matiere
      * @ORM\ManyToOne(targetEntity="App\Entity\CategorieMatiere", inversedBy="matieres")
      */
     private $categorie;
+
+    /**
+     * @Gedmo\Slug(fields={"titre"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    public function getSlug()
+    {
+      return $this->slug;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
 
     public function getId(): ?int
     {

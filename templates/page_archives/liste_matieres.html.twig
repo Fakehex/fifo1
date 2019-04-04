@@ -12,9 +12,9 @@
     <h1>Matieres ✅</h1>
 
     <table class="table">
-        {% for matieres in matieres %}
+        {% for matiere in matieres %}
             <tr>
-                <td><a href="{#{{ path('liste_matieres', {'id': categorie.id}) }}#}">{{matieres.titre}}</a></td>
+                <td><a href="{#{{ path('liste_matieres', {'slug': matiere.slug}) }}#}">{{matiere.titre}}</a></td>
             </tr>
         {% else %}
             <tr>

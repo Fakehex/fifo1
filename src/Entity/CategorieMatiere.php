@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +28,21 @@ class CategorieMatiere
      * @ORM\OneToMany(targetEntity="App\Entity\Matiere", mappedBy="categorie")
      */
     private $matieres;
+    /**
+     * @Gedmo\Slug(fields={"titre"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
 
+    public function getSlug()
+    {
+      return $this->slug;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
     public function __construct()
     {
         $this->matieres = new ArrayCollection();
