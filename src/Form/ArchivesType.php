@@ -13,7 +13,8 @@ class ArchivesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sujet', FileType::class, ['label' => 'Sujet (PDF file)'])
+            ->add('titre')
+            ->add('sujet', FileType::class, ['label' => 'Sujet (PDF file)', 'data_class' => null])
             ->add('date')
             ->add('secondeSession')
         ;

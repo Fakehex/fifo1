@@ -24,6 +24,12 @@ class Correction
      * @Assert\File(mimeTypes={"application/pdf"})
      */
     private $correction;
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Veuillez donner un titre")
+     */
+    private $titre;
 
     /**
      * @ORM\Column(type="date")
@@ -46,14 +52,25 @@ class Correction
         return $this->id;
     }
 
-    public function getCorrection(): ?string
+    public function getCorrection()
     {
         return $this->correction;
     }
 
-    public function setCorrection(string $correction): self
+    public function setCorrection($correction)
     {
         $this->correction = $correction;
+
+        return $this;
+    }
+    public function getTitre()
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): self
+    {
+        $this->titre = $titre;
 
         return $this;
     }
