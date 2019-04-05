@@ -39,6 +39,11 @@ class Archives
      * @ORM\OneToMany(targetEntity="App\Entity\Correction", mappedBy="archive")
      */
     private $corrections;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Matiere", inversedBy="archives")
+     */
+    private $matiere;
     public function __construct()
     {
         $this->corrections = new ArrayCollection();
@@ -107,6 +112,18 @@ class Archives
                 $correction->setArchive(null);
             }
         }
+        return $this;
+    }
+
+    public function getMatiere(): ?Matiere
+    {
+        return $this->matiere;
+    }
+
+    public function setMatiere(?Matiere $matiere): self
+    {
+        $this->matiere = $matiere;
+
         return $this;
     }
 }

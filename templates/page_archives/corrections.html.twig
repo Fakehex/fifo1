@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}liste matieres!{% endblock %}
+{% block title %}Matieres{% endblock %}
 
 {% block body %}
 <style>
@@ -9,13 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Liste Matieres ✅</h1>
+    <h1>Corrections de {{archive.titre}} ✅</h1>
 
     <table class="table">
-        {% for matiere in matieres %}
-            <tr>
-                <td><a href="{{ path('matiere', {'slugCategorie': slugCategorie,'slugMatiere': matiere.slug}) }}">{{matiere.titre}}</a></td>
-            </tr>
+        {% for correction in corrections %}
+        <tr>
+            <td><a href="{{ asset('uploads/archives/' ~ correction.correction) }}">{{correction.titre}}(PDF)</a></td>
+        </tr>
         {% else %}
             <tr>
                 <td colspan="5">no records found</td>

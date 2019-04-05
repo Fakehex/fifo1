@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matieres{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Archives de {{matiere.titre}} ✅</h1>
+
+    <table class="table">
+        {% for archive in archives %}
+        <tr>
+            <td>{{ archive.id }}</td>
+            <td><a href="{{ asset('uploads/archives/' ~ archive.sujet) }}">{{archive.titre}}(PDF)</a></td>
+            <td>{{ archive.date ? archive.date|date('Y-m-d') : '' }}</td>
+            <td>{{ archive.secondeSession ? 'Yes' : 'No' }}</td>
+            <td><a href="{{ path('corrections', {'id': archive.id}) }}">{{archive.getCorrections|length}} Corrections</a></td>
+            <td><a href="{{ path('ajouter_correction', {'id': archive.id}) }}">Proposer une correction</a></td>
+        </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
