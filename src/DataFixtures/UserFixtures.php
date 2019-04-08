@@ -28,6 +28,7 @@ class UserFixtures extends Fixture
         $user->setPassword($this->passwordEncoder->encodePassword($user,'test'));
         $manager->persist($user);
 
+
         $product = new User();
         $product->setUsername('non');
         $product->setEmail('oui@non.non');
