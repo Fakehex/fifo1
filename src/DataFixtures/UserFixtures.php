@@ -12,10 +12,9 @@ use App\Entity\User;
 class UserFixtures extends Fixture
 {
     private $passwordEncoder;
-    private $roles;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder){
-        $this->passwordEncoder;
+        $this->passwordEncoder = $passwordEncoder;
     }
     public function load(ObjectManager $manager)
     {
@@ -23,8 +22,8 @@ class UserFixtures extends Fixture
 
         $user->setUsername('oui');
         $user->setEmail('oui@oui.oui');
-        $user->setPassword('test');
-        //$user->setPassword($this->passwordEncoder->encodePassword($user,'the_new_password'));
+
+        $user->setPassword($this->passwordEncoder->encodePassword($user,'test'));
         $manager->persist($user);
 
         $manager->flush();
