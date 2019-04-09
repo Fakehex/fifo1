@@ -19,8 +19,7 @@
         {% for archive in archives %}
             <tr>
                 <td>{{ archive.id }}</td>
-                <td><a href="{{ asset('uploads/archives/' ~ archive.sujet) }}">{{archive.titre}}(PDF)</a>
-</td>
+                <td><a href="{{ asset('uploads/archives/' ~ archive.sujet) }}">{{archive.titre}}(PDF)</a></td>
                 <td>{{ archive.date ? archive.date|date('Y-m-d') : '' }}</td>
                 <td>{{ archive.secondeSession ? 'Yes' : 'No' }}</td>
                 <td>

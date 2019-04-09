@@ -2,10 +2,14 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
-class TestController {
+/**
+ * @Route("/", name="accueil")
+ */
+class TestController extends AbstractController {
   public function index(){
-    return new Response('jpp3');
-    return new Response('helloworld');
+    return $this->render('accueil/index.html.twig');
   }
 }

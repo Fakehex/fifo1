@@ -13,7 +13,7 @@
 
     <table class="table">
         {% for categorie in categories %}
-            <tr>
+            <tr class="alert alert-success">
                 <td><a href="{{ path('liste_matieres', {'slug': categorie.slug}) }}">{{categorie.titre}}</a></td>
             </tr>
         {% else %}
