@@ -22,7 +22,9 @@ security:
             # http_basic: true
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
-            form_login: true
+            form_login:
+                login_path: login
+                check_path: login
             logout:
                 path:   app_logout
             guard:
