@@ -180,11 +180,11 @@ a:hover {
 }
 
 #logo {
-	width: 121px;
+	width: 134px;
 	height: 134px;
 	display: block;
 	cursor: pointer;
-	margin: 0 auto -82px;
+	margin: 0 auto -60px;
 	text-indent: -9999em;
 	background: url(../images/logo.png) no-repeat;
 	position: relative;
@@ -239,8 +239,8 @@ a:hover {
 }
 
 .divider {
-	background: #2c4167 url(../images/bg_white_arrow.png) no-repeat 50% 0;
-	height: 80px;
+	background: black url(../images/bg_white_arrow.png) no-repeat 50% 0;
+	height: 50px;
 	position: relative;
 	margin-top: 3px;
 	margin-bottom: 37px;

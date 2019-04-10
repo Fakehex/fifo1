@@ -11,18 +11,19 @@
     <body>
       <header id="header">
         <div class="container">
-          <a href="index.html" id="logo" title="HarrisonHighSchool">FIFO</a>
+          <a href="index.html" id="logo" title="FIFO">FIFO</a>
           <div class="menu-trigger"></div>
           <nav id="menu">
             <ul>
-              <li><a href="events.html">Archives</a></li>
-              <li><a href="gallery.html">Students</a></li>
-              <li><a href="events.html">Events</a></li>
+              <li><a href="#">Evenement</a></li>
+              <li><a href="{{path('page_archives')}}">Archives</a></li>
+              <li><a href="#">Forum</a></li>
             </ul>
             <ul>
-              <li><a href="gallery.html">Teachers</a></li>
-              <li><a href="gallery.html">Gallery</a></li>
-              <li><a href="#fancy" class="get-contact">Contact</a></li>
+              <li><a href="#">Entreprise</a></li>
+              <li><a href="#" class="get-contact">Contact</a></li>
+              <li><a href="#">Connexion</a></li>
+
               </ul>
           </nav>
           <!-- / navigation -->
@@ -30,6 +31,7 @@
         <!-- / container -->
 
       </header>
+      <div class="divider"></div>
       <!-- / header -->
         {% block body %}{% endblock %}
         {% block javascripts %}
