@@ -3,5 +3,5 @@ index:
     controller: App\Controller\TestController::index
 
 app_logout:
-  path: /
+  path: /logout
   methods: GET
