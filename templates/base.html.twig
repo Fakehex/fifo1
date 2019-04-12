@@ -6,12 +6,13 @@
   {% block stylesheets %}
   {{encore_entry_link_tags('app') }}
   <link rel="stylesheet" media="all" href="{{ asset('build/css/style.css') }}"/>
+
   {% endblock %}
 </head>
 <body>
   <header id="header">
     <div class="container">
-      <a href="index.html" id="logo" title="FIFO">FIFO</a>
+      <a href="{{path('accueil')}}" id="logo" title="FIFO">FIFO</a>
       <div class="menu-trigger"></div>
       <nav id="menu">
         <ul>

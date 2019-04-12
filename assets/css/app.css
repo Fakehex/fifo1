@@ -994,7 +994,7 @@ a.btn.blue,
 
 #footer {
 	clear: both;
-	background: #2c4167 url(../images/bg_white_arrow.png) no-repeat 50% 0;
+	background: black url(../images/bg_white_arrow.png) no-repeat 50% 0;
 	overflow: hidden;
 	padding: 91px 0 0 0;
 	font-size: 14px;
@@ -2025,4 +2025,6 @@ a.btn.blue,
 		padding-bottom: 30px;
 	}
 }
+
+
 @import "~bootstrap/dist/css/bootstrap.css";

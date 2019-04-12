@@ -24,10 +24,11 @@ class PageArchivesController extends AbstractController
     /**
      * @Route("/", name="page_archives")
      */
-    public function index(CategorieMatiereRepository $CategorieMatiereRepository )
+    public function index(MatiereRepository $MatiereRepository, CategorieMatiereRepository $CategorieMatiereRepository )
     {
       return $this->render('page_archives/index.html.twig', [
           'categories' => $CategorieMatiereRepository->findAll(),
+          'matieres' => $MatiereRepository->findAll(),
       ]);
     }
     /**
@@ -69,7 +70,7 @@ class PageArchivesController extends AbstractController
       $form = $this->createFormBuilder($correction)
             ->add('titre', TextType::class)
             ->add('correction',FileType::class, ['label' => 'Sujet (PDF file)', 'data_class' => null])
-            ->add('save', SubmitType::class, ['label' => 'Ajouter la Correction'])
+          /*  ->add('save', SubmitType::class, ['label' => 'Ajouter la Correction']) */
             ->getForm();
       $form->handleRequest($request);
 
@@ -87,7 +88,8 @@ class PageArchivesController extends AbstractController
           return $this->redirectToRoute('correction_index');
       }
 
-      return $this->render('correction/new.html.twig', [
+      return $this->render('page_archives/ajouter_correction.html.twig', [
+          'archive' => $archive,
           'correction' => $correction,
           'form' => $form->createView(),
       ]);

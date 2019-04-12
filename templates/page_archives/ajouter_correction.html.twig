@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une correction a {{archive.titre}}{% endblock %}
+
+{% block body %}
+    <h1>Ajout de correction a l'archive : {{archive.titre}}</h1>
+
+    {{ include('correction/_form.html.twig') }}
+
+{% endblock %}
