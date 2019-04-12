@@ -9,15 +9,23 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Archives de {{matiere.titre}} ✅</h1>
+    <h1>Archives de {{matiere.titre}}</h1>
 
-    <table class="table">
+    <table class="table table-striped table-dark">
+      <thead>
+   <tr>
+     <th scope="col">PDF</th>
+     <th scope="col">Date</th>
+     <th scope="col">Corrections</th>
+     <th scope="col">#</th>
+   </tr>
+ </thead>
+ <tbody>
         {% for archive in archives %}
         <tr>
-            <td>{{ archive.id }}</td>
             <td><a href="{{ asset('uploads/archives/' ~ archive.sujet) }}">{{archive.titre}}(PDF)</a></td>
             <td>{{ archive.date ? archive.date|date('Y-m-d') : '' }}</td>
-            <td>{{ archive.secondeSession ? 'Yes' : 'No' }}</td>
+          <!--  <td>{{ archive.secondeSession ? 'Yes' : 'No' }}</td> -->
             <td><a href="{{ path('corrections', {'id': archive.id}) }}">{{archive.getCorrections|length}} Corrections</a></td>
             <td><a href="{{ path('ajouter_correction', {'id': archive.id}) }}">Proposer une correction</a></td>
         </tr>
@@ -26,6 +34,7 @@
                 <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
+     </tbody>
     </table>
 </div>
 {% endblock %}
