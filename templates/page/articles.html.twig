@@ -1,0 +1,3 @@
+{% for page in articles %}
+  <li><a href="{{ path('article', {'id': page.id}) }}">{{page.titre}}</a></li>
+{% endfor %}

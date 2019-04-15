@@ -11,12 +11,31 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/page")
+ * @Route("/")
  */
 class PageController extends AbstractController
 {
+
+    public function articles(PageRepository $pageRepository): Response
+    {
+      $articles = $pageRepository->findAll();
+
+      return $this->render(
+          'page/articles.html.twig',
+          ['articles' => $articles]
+      );
+    }
     /**
-     * @Route("/", name="page_index", methods={"GET"})
+     * @Route("informations/{id}", name="article", methods={"GET"})
+     */
+    public function article(Page $page): Response
+    {
+        return $this->render('page/article.html.twig', [
+            'page' => $page,
+        ]);
+    }
+    /**
+     * @Route("/page", name="page_index", methods={"GET"})
      */
     public function index(PageRepository $pageRepository): Response
     {
@@ -26,7 +45,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="page_new", methods={"GET","POST"})
+     * @Route("/admin/page/new", name="page_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -49,7 +68,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="page_show", methods={"GET"})
+     * @Route("/admin/page/{id}", name="page_show", methods={"GET"})
      */
     public function show(Page $page): Response
     {
@@ -59,7 +78,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="page_edit", methods={"GET","POST"})
+     * @Route("/admin/page/{id}/edit", name="page_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Page $page): Response
     {
@@ -81,7 +100,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="page_delete", methods={"DELETE"})
+     * @Route("/admin/page/{id}", name="page_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Page $page): Response
     {
