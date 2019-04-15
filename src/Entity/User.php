@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
+
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -18,7 +21,12 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", unique=true)
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 18,
+     *     minMessage = "Votre pseudo doit comporter au moins {{ limit }} caractères",
+     *     maxMessage = "Votre pseudo doit comporter au maximum {{ limit }} caractères")
      */
     private $username;
 
@@ -26,7 +34,7 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
-    //Roles: ROLE_FIFO, ROLE_USER et ROLE_ADMIN
+    //Roles: ROLE_FIFO?, ROLE_USER et ROLE_ADMIN
 
     /**
      * @var string The hashed password
@@ -35,7 +43,13 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", unique=true)
+     * @Assert\length(
+     *     min = 5,
+     *     max = 50,
+     *     minMessage = "Votre email doit comporter au moins {{ limit }} caractères",
+     *     maxMessage = "Votre email doit comporter au maximum {{ limit }} caractères")
+     * @Assert\Email()
      */
     private $email;
 
