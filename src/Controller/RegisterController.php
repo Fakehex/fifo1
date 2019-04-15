@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegisterController extends Controller
 {
     /**
-     * @Route("/register")
+     * @Route("/register", name="app_register")
      */
 
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder){

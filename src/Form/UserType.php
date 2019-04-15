@@ -21,7 +21,7 @@ class UserType extends AbstractType
             ->add('email',EmailType::class)
             ->add('password',RepeatedType::class,array('type' => PasswordType::class,
                 'first_options' => array('label' => 'Mot de passe'),
-                'second_options' => array('label' => 'Confirmation du mot de passe'),
+                'second_options' => array('label' => 'Confirmer mot de passe'),
                 ))
             ->add('email',EmailType::class)
             ->add('submit',SubmitType::class,['label' =>'Inscription','attr'=>['class'=>'btn-primary btn-block']])
