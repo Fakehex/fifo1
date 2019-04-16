@@ -21,7 +21,9 @@ class RegisterController extends Controller
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
+
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()){
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
@@ -29,9 +31,10 @@ class RegisterController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('success','Killer Queen a déjà touché votre compte');
 
+            return $this->redirectToRoute('accueil');
         }
+
         return $this->render('user/_form.html.twig', ['form' => $form->createView(), 'mainNavRegistration' => true, 'title' => 'Inscription']);
     }
 }
