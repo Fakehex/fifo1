@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CategorieForum{% endblock %}
+
+{% block body %}
+    <h1>CategorieForum</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ categorie_forum.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ categorie_forum.titre }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ categorie_forum.slug }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('categorie_forum_index') }}">back to list</a>
+
+    <a href="{{ path('categorie_forum_edit', {'id': categorie_forum.id}) }}">edit</a>
+
+    {{ include('categorie_forum/_delete_form.html.twig') }}
+{% endblock %}

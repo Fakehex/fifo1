@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TopicRepository")
@@ -17,6 +18,10 @@ class Topic
      * @ORM\Column(type="integer")
      */
     private $id;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $titre;
 
     /**
      * @ORM\Column(type="text")
@@ -33,6 +38,23 @@ class Topic
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorieForum;
+
+
+    /**
+     * @Gedmo\Slug(fields={"titre"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    public function getSlug()
+    {
+      return $this->slug;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
 
     public function __construct()
     {
@@ -95,6 +117,18 @@ class Topic
     public function setCategorieForum(?CategorieForum $categorieForum): self
     {
         $this->categorieForum = $categorieForum;
+
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): self
+    {
+        $this->titre = $titre;
 
         return $this;
     }

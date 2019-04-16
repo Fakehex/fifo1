@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CategorieForum{% endblock %}
+
+{% block body %}
+    <h1>Create new CategorieForum</h1>
+
+    {{ include('categorie_forum/_form.html.twig') }}
+
+    <a href="{{ path('categorie_forum_index') }}">back to list</a>
+{% endblock %}

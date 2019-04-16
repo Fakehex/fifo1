@@ -4,6 +4,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArchivesRepository")
  */
@@ -44,6 +45,22 @@ class Archives
      * @ORM\ManyToOne(targetEntity="App\Entity\Matiere", inversedBy="archives")
      */
     private $matiere;
+
+    /**
+     * @Gedmo\Slug(fields={"titre"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
+
+    public function getSlug()
+    {
+      return $this->slug;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
     public function __construct()
     {
         $this->corrections = new ArrayCollection();

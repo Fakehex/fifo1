@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Menu{% endblock %}
+
+{% block body %}
+
+  <div class="container">
+    <div class="sidebar">
+        <ul>
+            <li><a href="{{ path('archives_index') }}">Archives</a></li>
+            <li><a href="{{ path('topic_index') }}">Topic</a></li>
+            <li><a href="{{ path('categorie_forum_index') }}">Categorie Forum</a></li>
+            <li><a href="{{ path('commentaire_index') }}">Commentaires</a></li>
+            <li><a href="{{ path('matiere_index') }}">Matiere</a></li>
+            <li><a href="{{ path('correction_index') }}">Correction</a></li>
+            <li><a href="{{ path('categorie_matiere_index') }}">Categorie Matiere</a></li>
+            <li><a href="{{ path('page_index') }}">Page d'informations</a></li>
+        </ul>
+    </div>
+  </div>
+
+{% endblock %}
