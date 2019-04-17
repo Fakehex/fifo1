@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block body %}
+<div class="container">
+  <ul>
+    {% for categorie in categories %}
+      <li>
+        <form method="get" action="{{ path('topics', {'slugCategorie': categorie.slug}) }}">
+            <button type="submit" class="btn btn-secondary">{{categorie.titre}}</button>
+        </form>
+      </li>
+    {% else %}
+  </ul>
+      <tr>
+        <td colspan="5">no records found</td>
+      </tr>
+    {% endfor %}
+</div>
+{% endblock %}

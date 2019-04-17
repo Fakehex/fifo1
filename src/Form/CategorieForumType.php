@@ -13,7 +13,6 @@ class CategorieForumType extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add('slug')
         ;
     }
 

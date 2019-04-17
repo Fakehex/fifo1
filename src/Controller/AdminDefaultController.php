@@ -28,6 +28,6 @@ class AdminDefaultController extends AbstractController {
    */
   public function s2(SessionInterface $session){
     $s1 = $session->get('s1');
-    return $this->render('test.html.twig',['s1' => $s1]);
+    return $this->render('accueil/index.html.twig',['s1' => $s1]);
   }
 }

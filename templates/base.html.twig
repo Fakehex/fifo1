@@ -23,7 +23,10 @@
         <ul>
           <li><a href="#">Entreprise</a></li>
           <li><a href="#" class="get-contact">Contact</a></li>
-          <li><a href="{{path('app_login')}}">Connexion</a></li>
+          {{ render(controller(
+            'App\\Controller\\TestController::connexionOuPas'
+          )) }}
+
 
         </ul>
       </nav>
