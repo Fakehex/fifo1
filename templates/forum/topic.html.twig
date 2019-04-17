@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ topic.titre }}{% endblock %}
+
+{% block body %}
+  {{topic.titre}}
+  <div class="container">
+    {{topic.text}}
+  </div>
+  <div class="container">
+    {% for commentaire in topic.commentaires %}
+      <div class="container">
+        {{ commentaire.user.username }}
+        {{ commentaire.text }}
+      </div>
+    {% else %}
+      <div class="container">
+        Soyez le premier a répondre !
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

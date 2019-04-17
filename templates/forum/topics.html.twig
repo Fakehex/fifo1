@@ -7,7 +7,7 @@
   <ul>
     {% for topic in topics %}
       <li>
-        <form method="get" action="{{ path('topics', {'slugTopic': topic.slug}) }}">
+        <form method="get" action="{{ path('topic', {'slugCategorie': slugCategorie , 'slugTopic': topic.slug }) }}">
             <button type="submit" class="btn btn-secondary">{{topic.titre}}</button>
         </form>
       </li>

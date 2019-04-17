@@ -35,7 +35,7 @@ class PageController extends AbstractController
         ]);
     }
     /**
-     * @Route("/page", name="page_index", methods={"GET"})
+     * @Route("admin/page", name="page_index", methods={"GET"})
      */
     public function index(PageRepository $pageRepository): Response
     {

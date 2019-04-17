@@ -6,6 +6,9 @@ use App\Entity\Commentaire;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Topic;
+use App\Entity\User;
 
 class CommentaireType extends AbstractType
 {
@@ -13,8 +16,8 @@ class CommentaireType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('user')
-            ->add('topic')
+            ->add('user', EntityType::class,['class' => User::class, 'choice_label' => 'username'])
+            ->add('topic', EntityType::class,['class' => Topic::class, 'choice_label' => 'titre'])
         ;
     }
 

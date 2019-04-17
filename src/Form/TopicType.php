@@ -6,6 +6,8 @@ use App\Entity\Topic;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\CategorieForum;
 
 class TopicType extends AbstractType
 {
@@ -14,8 +16,7 @@ class TopicType extends AbstractType
         $builder
             ->add('titre')
             ->add('text')
-            ->add('slug')
-            ->add('categorieForum')
+            ->add('categorieForum', EntityType::class,['class' => CategorieForum::class, 'choice_label' => 'titre'])
         ;
     }
 
