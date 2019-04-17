@@ -23,4 +23,15 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
+
+    /**
+     * @Route("/password", name="app_mdp_oubli")
+     */
+    public function forgottenPassword(): Response
+    {
+
+        return $this->render('security/mdpoubli.html.twig');
+    }
+
+
 }
