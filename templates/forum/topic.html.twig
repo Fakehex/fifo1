@@ -11,13 +11,14 @@
     {% for commentaire in topic.commentaires %}
       <div class="container">
         {{ commentaire.user.username }}
-        {{ commentaire.text }}
+        {{ commentaire.text | raw }}
       </div>
     {% else %}
       <div class="container">
         Soyez le premier a répondre !
       </div>
     {% endfor %}
+    {{ include('forum/_formCommentaire.html.twig') }}
   </div>
 
 {% endblock %}

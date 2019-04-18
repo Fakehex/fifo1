@@ -6,19 +6,14 @@ use App\Entity\Commentaire;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Topic;
-use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class CommentaireType extends AbstractType
+class CommentaireUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('text', TextareaType::class, array('attr' => array('class' => 'ckeditor')))
-            ->add('user', EntityType::class,['class' => User::class, 'choice_label' => 'username'])
-            ->add('topic', EntityType::class,['class' => Topic::class, 'choice_label' => 'titre'])
         ;
     }
 

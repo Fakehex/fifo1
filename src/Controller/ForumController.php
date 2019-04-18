@@ -4,8 +4,12 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use App\Repository\CategorieForumRepository;
 use App\Repository\TopicRepository;
+use App\Repository\UserRepository;
+use App\Entity\Commentaire;
+use App\Form\CommentaireUserType;
 
 
 
@@ -33,12 +37,33 @@ class ForumController extends AbstractController {
     ]);
   }
   /**
-   * @Route("{slugCategorie}/{slugTopic}", name="topic")
+   * @Route("/{slugCategorie}/{slugTopic}", name="topic")
    */
-  public function topic_affiche(CategorieForumRepository $CategorieForumRepository, TopicRepository $TopicRepository, $slugCategorie,$slugTopic){
+  public function topic_affiche(Request $request,UserRepository $UserRepository,CategorieForumRepository $CategorieForumRepository, TopicRepository $TopicRepository, $slugCategorie,$slugTopic){
     $topic = $TopicRepository->findOneBy(['slug'=>$slugTopic]);
+
+    //VERIFIE SI LE PERSO EST CONNECTE -----------------
+    //--------------------------------------
+    $idUser = 5;
+    $user = $UserRepository->findOneBy(['id'=>$idUser])/*--------BESOIN DU USER-----------------*/;
+    $commentaire = new Commentaire();
+    $commentaire->setUser($user);
+    $commentaire->setTopic($topic);
+    $form = $this->createForm(CommentaireUserType::class, $commentaire);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($commentaire);
+        $entityManager->flush();
+    }
+
+    //---------------------------------------
+    //----------------------------------------
     return $this->render('forum/topic.html.twig', [
         'topic' => $topic,
+        'form' => $form->createView(),
     ]);
   }
+
 }
