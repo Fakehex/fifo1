@@ -10,14 +10,13 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\CategorieForum;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class TopicType extends AbstractType
+class TopicUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('titre')
             ->add('text', TextareaType::class, array('attr' => array('class' => 'ckeditor')))
-            ->add('categorieForum', EntityType::class,['class' => CategorieForum::class, 'choice_label' => 'titre'])
         ;
     }
 
