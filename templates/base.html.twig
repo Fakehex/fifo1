@@ -23,10 +23,7 @@
         <ul>
           <li><a href="#">Entreprise</a></li>
           <li><a href="#" class="get-contact">Contact</a></li>
-          {{ render(controller(
-            'App\\Controller\\TestController::connexionOuPas'
-          )) }}
-
+          {{ render(controller('App\\Controller\\DefaultController::connexionOuPas')) }}
 
         </ul>
       </nav>
