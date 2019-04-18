@@ -16,14 +16,15 @@ class DefaultController extends AbstractController
      */
     public function index(Request $request)
     {
-        $session = $request->getSession()->get('deco');
+        $session = $request->getSession()->get('co');
+        $session2 = $request->getSession()->get('username');
 
-        return $this->render('accueil/index.html.twig',['deco' => $session]);
+        return $this->render('accueil/index.html.twig',['co' => $session, 'username' => $session2]);
 
     }
 
     public function connexionOuPas(Request $request){
-        $deco = $request->getSession()->get('deco');
+        $deco = $request->getSession()->get('co');
         if($deco == 'Deconnexion'){
             return $this->render(
                 'accueil/deconnexion.html.twig'
