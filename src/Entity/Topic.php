@@ -46,6 +46,12 @@ class Topic
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="topics")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function getSlug()
     {
       return $this->slug;
@@ -129,6 +135,18 @@ class Topic
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

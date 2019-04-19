@@ -63,6 +63,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->topics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,6 +189,11 @@ class User implements UserInterface
     protected $resetToken;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Topic", mappedBy="user", orphanRemoval=true)
+     */
+    private $topics;
+
+    /**
      * @return string
      */
     public function getResetToken(): string
@@ -201,5 +207,36 @@ class User implements UserInterface
     public function setResetToken(?string $resetToken): void
     {
         $this->resetToken = $resetToken;
+    }
+
+    /**
+     * @return Collection|Topic[]
+     */
+    public function getTopics(): Collection
+    {
+        return $this->topics;
+    }
+
+    public function addTopic(Topic $topic): self
+    {
+        if (!$this->topics->contains($topic)) {
+            $this->topics[] = $topic;
+            $topic->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopic(Topic $topic): self
+    {
+        if ($this->topics->contains($topic)) {
+            $this->topics->removeElement($topic);
+            // set the owning side to null (unless already changed)
+            if ($topic->getUser() === $this) {
+                $topic->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

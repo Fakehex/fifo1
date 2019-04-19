@@ -5,9 +5,11 @@
 {% block body %}
   {{topic.titre}}
   <div class="container">
-    {{topic.text}}
+    {{topic.text | raw }}
   </div>
   <div class="container">
+
+
     {% for commentaire in topic.commentaires %}
       <div class="container">
         {{ commentaire.user.username }}
@@ -18,7 +20,13 @@
         Soyez le premier a répondre !
       </div>
     {% endfor %}
-    {{ include('forum/_formCommentaire.html.twig') }}
+    {% if isConnected %}
+      {{ include('forum/_formCommentaire.html.twig') }}
+    {% else %}
+    <div class="container">
+      Veuillez vous connecter pour pouvoir commenter !
+    </div>
+    {% endif %}
   </div>
 
 {% endblock %}

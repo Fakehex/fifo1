@@ -9,6 +9,8 @@ use App\Repository\CategorieForumRepository;
 use App\Repository\TopicRepository;
 use App\Repository\UserRepository;
 use App\Entity\Commentaire;
+use App\Entity\Topic;
+use App\Form\TopicUserType;
 use App\Form\CommentaireUserType;
 
 
@@ -41,29 +43,70 @@ class ForumController extends AbstractController {
    */
   public function topic_affiche(Request $request,UserRepository $UserRepository,CategorieForumRepository $CategorieForumRepository, TopicRepository $TopicRepository, $slugCategorie,$slugTopic){
     $topic = $TopicRepository->findOneBy(['slug'=>$slugTopic]);
+    if($request->getSession()->has('username')){
+      $user = $UserRepository->findOneBy(['username'=>$request->getSession()->get('username')])/*--------BESOIN DU USER-----------------*/;
+      $commentaire = new Commentaire();
+      $commentaire->setUser($user);
+      $commentaire->setTopic($topic);
+      $form = $this->createForm(CommentaireUserType::class, $commentaire);
+      $form->handleRequest($request);
 
-    //VERIFIE SI LE PERSO EST CONNECTE -----------------
-    //--------------------------------------
-    $idUser = 5;
-    $user = $UserRepository->findOneBy(['id'=>$idUser])/*--------BESOIN DU USER-----------------*/;
-    $commentaire = new Commentaire();
-    $commentaire->setUser($user);
-    $commentaire->setTopic($topic);
-    $form = $this->createForm(CommentaireUserType::class, $commentaire);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($commentaire);
-        $entityManager->flush();
+      if ($form->isSubmitted() && $form->isValid()) {
+          $entityManager = $this->getDoctrine()->getManager();
+          $entityManager->persist($commentaire);
+          $entityManager->flush();
+      }
+    }else{
+      return $this->render('forum/topic.html.twig', [
+          'topic' => $topic,
+          'isConnected' => false,
+      ]);
     }
 
-    //---------------------------------------
-    //----------------------------------------
     return $this->render('forum/topic.html.twig', [
         'topic' => $topic,
+        'isConnected' => true,
         'form' => $form->createView(),
     ]);
+  }
+
+  /**
+   * @Route("/{slugCategorie}/nouveau/debug", name="nouveau_topic")
+   */
+  public function nouveau_topic(Request $request,UserRepository $UserRepository, CategorieForumRepository $CategorieForumRepository, $slugCategorie): Response
+  {
+      $username = $request->getSession()->get('username');
+      if($request->getSession()->has('username')){
+
+        $categorie =  $CategorieForumRepository->findOneBy(['slug'=>$slugCategorie]);
+        $user = $UserRepository->findOneBy([ 'username' => $username ]);
+
+        $topic = new Topic();
+        $topic->setUser($user);
+        $topic->setCategorieForum($categorie);
+        $form = $this->createForm(TopicUserType::class, $topic);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($topic);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('topics', [
+                'slugCategorie' => $categorie->getSlug(),
+            ]);
+        }
+
+        return $this->render('forum/nouveau_topic.html.twig', [
+            'categorie' => $categorie,
+            'topic' => $topic,
+            'form' => $form->createView(),
+        ]);
+
+      }
+          return $this->redirectToRoute('app_login');
+
+
   }
 
 }

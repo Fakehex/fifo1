@@ -17,5 +17,8 @@
         <td colspan="5">no records found</td>
       </tr>
     {% endfor %}
+    <form method="get" action="{{ path('nouveau_topic', {'slugCategorie': slugCategorie}) }}">
+        <button type="submit" class="btn btn-Dark">Crée un nouveau topic</button>
+    </form>
 </div>
 {% endblock %}
