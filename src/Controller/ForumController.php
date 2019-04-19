@@ -71,7 +71,7 @@ class ForumController extends AbstractController {
   }
 
   /**
-   * @Route("/{slugCategorie}/nouveau/debug", name="nouveau_topic")
+   * @Route("/nouveau/{slugCategorie}/debug", name="nouveau_topic")
    */
   public function nouveau_topic(Request $request,UserRepository $UserRepository, CategorieForumRepository $CategorieForumRepository, $slugCategorie): Response
   {
