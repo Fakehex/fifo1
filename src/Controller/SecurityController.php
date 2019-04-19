@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Acl\Exception\Exception;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -40,11 +41,12 @@ class SecurityController extends AbstractController
             $email = $request->request->get('email');
 
             $entityManager = $this->getDoctrine()->getManager();
-            $user = $entityManager->getRepository(User::class)->findOneByEmail($email);
+            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
             /* @var $user User */
 
             if ($user === null) {
                 $this->addFlash('danger', 'Email Inconnu');
+
                 return $this->redirectToRoute('accueil');
             }
             $token = $tokenGenerator->generateToken();
@@ -52,18 +54,18 @@ class SecurityController extends AbstractController
             try {
                 $user->setResetToken($token);
                 $entityManager->flush();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->addFlash('warning', $e->getMessage());
                 return $this->redirectToRoute('accueil');
             }
 
             $url = $this->generateUrl('app_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
 
-            $message = (new \Swift_Message('Forgot Password'))
-                ->setFrom('g.ponty@dev-web.io')
+            $message = (new \Swift_Message('FIFO Mot de passe Oublié'))
+                ->setFrom('legretquentin@yahoo.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
-                    "blablabla voici le token pour reseter votre mot de passe : " . $url,
+                    " voici le token pour reseter votre mot de passe : " . $url,
                     'text/html'
                 );
 
@@ -84,7 +86,7 @@ class SecurityController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $entityManager = $this->getDoctrine()->getManager();
-            $user = $entityManager->getRepository(User::class)->findOneByResetToken($token);
+            $user = $entityManager->getRepository(User::class)->findOneBy(['resetToken' => $token]);
             /* @var $user User */
             if ($user === null) {
                 $this->addFlash('danger', 'Token Inconnu');

@@ -24,8 +24,8 @@ class DefaultController extends AbstractController
     }
 
     public function connexionOuPas(Request $request){
-        $deco = $request->getSession()->get('co');
-        if($deco == 'Deconnexion'){
+        $co = $request->getSession()->get('co');
+        if($co == 'true'){
             return $this->render(
                 'accueil/deconnexion.html.twig'
             );
@@ -33,7 +33,5 @@ class DefaultController extends AbstractController
             return $this->render('accueil/connexion.html.twig');
         }
     }
-
-
 
 }
