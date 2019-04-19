@@ -4,6 +4,7 @@
 
 {% block body %}
   {{topic.titre}}
+  <p>Publié le {{ topic.date|date("F jS \\a\\t g:ia") }}</p>
   <div class="container">
     {{topic.text | raw }}
   </div>
@@ -13,6 +14,7 @@
     {% for commentaire in topic.commentaires %}
       <div class="container">
         {{ commentaire.user.username }}
+        {{ commentaire.publishedAt|date("F jS \\a\\t g:ia")}}
         {{ commentaire.text | raw }}
       </div>
     {% else %}

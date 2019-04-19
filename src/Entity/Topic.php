@@ -52,6 +52,11 @@ class Topic
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
     public function getSlug()
     {
       return $this->slug;
@@ -147,6 +152,18 @@ class Topic
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

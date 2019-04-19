@@ -48,6 +48,7 @@ class ForumController extends AbstractController {
       $commentaire = new Commentaire();
       $commentaire->setUser($user);
       $commentaire->setTopic($topic);
+      $commentaire->setPublishedAt(new \DateTime());
       $form = $this->createForm(CommentaireUserType::class, $commentaire);
       $form->handleRequest($request);
 
@@ -82,6 +83,7 @@ class ForumController extends AbstractController {
         $user = $UserRepository->findOneBy([ 'username' => $username ]);
 
         $topic = new Topic();
+        $topic->setDate(new \DateTime());
         $topic->setUser($user);
         $topic->setCategorieForum($categorie);
         $form = $this->createForm(TopicUserType::class, $topic);

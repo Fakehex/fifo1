@@ -33,6 +33,11 @@ class Commentaire
      */
     private $topic;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $published_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class Commentaire
     public function setTopic(?Topic $topic): self
     {
         $this->topic = $topic;
+
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTimeInterface
+    {
+        return $this->published_at;
+    }
+
+    public function setPublishedAt(\DateTimeInterface $published_at): self
+    {
+        $this->published_at = $published_at;
 
         return $this;
     }
