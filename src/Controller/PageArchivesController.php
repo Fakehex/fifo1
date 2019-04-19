@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\UserRepository;
 use App\Repository\CategorieMatiereRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\ArchivesRepository;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Service\FileUploader;
 use App\Entity\Correction;
+use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -57,13 +59,15 @@ class PageArchivesController extends AbstractController
       ]);
     }
     /**
-     * @Route("/ajouterCorrection/{id}", name="ajouter_correction", methods={"GET","POST"})
+     * @Route("/ajouterCorrection/{slug}", name="ajouter_correction", methods={"GET","POST"})
      */
-    public function AjouterCorrection(ArchivesRepository $ArchivesRepository,Request $request,FileUploader $fileUploader ,$id)
+    public function AjouterCorrection(UserRepository $UserRepository,ArchivesRepository $ArchivesRepository,Request $request,FileUploader $fileUploader ,$slug)
     {
-      $archive = $ArchivesRepository->findOneBy(['id' => $id]);
-
+      $archive = $ArchivesRepository->findOneBy(['slug' => $slug]);
+      $username = $request->getSession()->get('username');
+      $user = $UserRepository->findOneBy(['username' => $username]);
       $correction = new Correction();
+      $correction->setUser($user);
       $correction->setArchive($archive);
       $correction->setDate(new \DateTime());
       $correction->setPocebleu(0);
@@ -95,11 +99,11 @@ class PageArchivesController extends AbstractController
       ]);
     }
     /**
-     * @Route("/corrections/{id}", name="corrections", methods={"GET"})
+     * @Route("/corrections/{slug}", name="corrections", methods={"GET"})
      */
-    public function Corrections(ArchivesRepository $ArchivesRepository,$id)
+    public function Corrections(ArchivesRepository $ArchivesRepository,$slug)
     {
-      $archive = $ArchivesRepository->findOneBy(['id' => $id]);
+      $archive = $ArchivesRepository->findOneBy(['slug' => $slug]);
       $corrections = $archive->getCorrections();
       return $this->render('page_archives/corrections.html.twig', [
           'corrections' => $corrections,

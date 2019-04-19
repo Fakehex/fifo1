@@ -26,8 +26,8 @@
             <td><a href="{{ asset('uploads/archives/' ~ archive.sujet) }}">{{archive.titre}}(PDF)</a></td>
             <td>{{ archive.date ? archive.date|date('Y-m-d') : '' }}</td>
           <!--  <td>{{ archive.secondeSession ? 'Yes' : 'No' }}</td> -->
-            <td><a href="{{ path('corrections', {'id': archive.id}) }}">{{archive.getCorrections|length}} Corrections</a></td>
-            <td><a href="{{ path('ajouter_correction', {'id': archive.id}) }}">Proposer une correction</a></td>
+            <td><a href="{{ path('corrections', {'slug': archive.slug}) }}">{{archive.getCorrections|length}} Corrections</a></td>
+            <td><a href="{{ path('ajouter_correction', {'slug': archive.slug}) }}">Proposer une correction</a></td>
         </tr>
         {% else %}
             <tr>

@@ -64,6 +64,7 @@ class User implements UserInterface
     {
         $this->commentaires = new ArrayCollection();
         $this->topics = new ArrayCollection();
+        $this->corrections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,6 +195,11 @@ class User implements UserInterface
     private $topics;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Correction", mappedBy="user", orphanRemoval=true)
+     */
+    private $corrections;
+
+    /**
      * @return string
      */
     public function getResetToken(): string
@@ -234,6 +240,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($topic->getUser() === $this) {
                 $topic->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Correction[]
+     */
+    public function getCorrections(): Collection
+    {
+        return $this->corrections;
+    }
+
+    public function addCorrection(Correction $correction): self
+    {
+        if (!$this->corrections->contains($correction)) {
+            $this->corrections[] = $correction;
+            $correction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCorrection(Correction $correction): self
+    {
+        if ($this->corrections->contains($correction)) {
+            $this->corrections->removeElement($correction);
+            // set the owning side to null (unless already changed)
+            if ($correction->getUser() === $this) {
+                $correction->setUser(null);
             }
         }
 
