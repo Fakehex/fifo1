@@ -2,10 +2,7 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EvenementRepository")
@@ -30,30 +27,14 @@ class Evenement
     private $texte;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="evenements")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $participants;
+    private $date;
 
     /**
-     * @Gedmo\Slug(fields={"titre"})
-     * @ORM\Column(length=128, unique=true)
+     * @ORM\Column(type="datetime")
      */
-    private $slug;
-
-    public function getSlug()
-    {
-      return $this->slug;
-    }
-
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-
-    public function __construct()
-    {
-        $this->participants = new ArrayCollection();
-    }
+    private $published_at;
 
     public function getId(): ?int
     {
@@ -84,28 +65,26 @@ class Evenement
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getParticipants(): Collection
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->participants;
+        return $this->date;
     }
 
-    public function addParticipant(User $participant): self
+    public function setDate(?\DateTimeInterface $date): self
     {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-        }
+        $this->date = $date;
 
         return $this;
     }
 
-    public function removeParticipant(User $participant): self
+    public function getPublishedAt(): ?\DateTimeInterface
     {
-        if ($this->participants->contains($participant)) {
-            $this->participants->removeElement($participant);
-        }
+        return $this->published_at;
+    }
+
+    public function setPublishedAt(\DateTimeInterface $published_at): self
+    {
+        $this->published_at = $published_at;
 
         return $this;
     }
