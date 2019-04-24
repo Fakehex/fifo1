@@ -200,6 +200,27 @@ class User implements UserInterface
     private $corrections;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\length(
+     *     max = 24,
+     *     maxMessage = "Votre prenom doit comporter au maximum {{ limit }} caractères")
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\length(
+     *     max = 24,
+     *     maxMessage = "Votre nom doit comporter au maximum {{ limit }} caractères")
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $statut;
+
+    /**
      * @return string
      */
     public function getResetToken(): string
@@ -273,6 +294,42 @@ class User implements UserInterface
                 $correction->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(?string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?string $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }
