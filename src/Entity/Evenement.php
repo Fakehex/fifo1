@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,16 @@ class Evenement
      * @ORM\Column(type="datetime")
      */
     private $published_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Inscrit", mappedBy="evenement")
+     */
+    private $inscrits;
+
+    public function __construct()
+    {
+        $this->inscrits = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +97,37 @@ class Evenement
     public function setPublishedAt(\DateTimeInterface $published_at): self
     {
         $this->published_at = $published_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Inscrit[]
+     */
+    public function getInscrits(): Collection
+    {
+        return $this->inscrits;
+    }
+
+    public function addInscrit(Inscrit $inscrit): self
+    {
+        if (!$this->inscrits->contains($inscrit)) {
+            $this->inscrits[] = $inscrit;
+            $inscrit->setEvenement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscrit(Inscrit $inscrit): self
+    {
+        if ($this->inscrits->contains($inscrit)) {
+            $this->inscrits->removeElement($inscrit);
+            // set the owning side to null (unless already changed)
+            if ($inscrit->getEvenement() === $this) {
+                $inscrit->setEvenement(null);
+            }
+        }
 
         return $this;
     }

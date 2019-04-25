@@ -33,6 +33,12 @@ class Inscrit
      */
     private $maison;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Evenement", inversedBy="inscrits")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $evenement;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +64,18 @@ class Inscrit
     public function setMaison(?Maison $maison): self
     {
         $this->maison = $maison;
+
+        return $this;
+    }
+
+    public function getEvenement(): ?Evenement
+    {
+        return $this->evenement;
+    }
+
+    public function setEvenement(?Evenement $evenement): self
+    {
+        $this->evenement = $evenement;
 
         return $this;
     }

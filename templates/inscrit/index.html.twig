@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscrit index{% endblock %}
+
+{% block body %}
+    <h1>Inscrit index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inscrit in inscrits %}
+            <tr>
+                <td>{{ inscrit.id }}</td>
+                <td>{{ inscrit.nom }}</td>
+                <td>
+                    <a href="{{ path('inscrit_show', {'id': inscrit.id}) }}">show</a>
+                    <a href="{{ path('inscrit_edit', {'id': inscrit.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('inscrit_new') }}">Create new</a>
+{% endblock %}
