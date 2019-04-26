@@ -6,13 +6,15 @@
     <div>
         <div>
             <h2>Votre Profil</h2>
-            <form><label>Prenom:</label><input type="text" value="{{ user.prenom }}" name="prenom" id="changePrenom" class="form-control" > <button>Valider Changement</button></form>
-            <form><label>Nom:</label><input type="text" value="{{ user.nom }}" name="nom" id="changeNom" class="form-control" > <button>Valider Changement</button></form>
-            <form><label>Email:</label><input type="text" value="{{ user.email }}" name="email" id="changeEmail" class="form-control" > <button>Valider Changement</button></form>
-            <label>Statut: {{ user.statut }}</label>
+            <div>
+                <h1>{{ user.username }}</h1>
+                {{ form(form) }}
+            {% if is_granted('ROLE_ADMIN') %}
+                <label>Statut: {{ user.statut }}</label>
+            {% endif %}
 
             Changer Mot de passe ?
-
+            </div>
         </div>
 
     </div>

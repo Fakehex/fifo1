@@ -38,6 +38,7 @@ security:
     access_control:
          - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/profil, roles: ROLE_USER }
          - { path: ^/forum/nouveau/*, roles: ROLE_USER }
          - { path: ^/archives/ajouterCorrection/*, roles: ROLE_USER }
          - { path: ^/evenement/inscription/*, roles: ROLE_USER }
