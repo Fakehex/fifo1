@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EvenementRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MaisonRepository")
  */
-class Evenement
+class Maison
 {
     /**
      * @ORM\Id()
@@ -21,25 +21,20 @@ class Evenement
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $titre;
+    private $nom;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $texte;
+    private $Description;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $date;
+    private $points;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $published_at;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Inscrit", mappedBy="evenement")
+     * @ORM\OneToMany(targetEntity="App\Entity\Inscrit", mappedBy="maison")
      */
     private $inscrits;
 
@@ -53,50 +48,38 @@ class Evenement
         return $this->id;
     }
 
-    public function getTitre(): ?string
+    public function getNom(): ?string
     {
-        return $this->titre;
+        return $this->nom;
     }
 
-    public function setTitre(string $titre): self
+    public function setNom(string $nom): self
     {
-        $this->titre = $titre;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getTexte(): ?string
+    public function getDescription(): ?string
     {
-        return $this->texte;
+        return $this->Description;
     }
 
-    public function setTexte(string $texte): self
+    public function setDescription(?string $Description): self
     {
-        $this->texte = $texte;
+        $this->Description = $Description;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getPoints(): ?int
     {
-        return $this->date;
+        return $this->points;
     }
 
-    public function setDate(?\DateTimeInterface $date): self
+    public function setPoints(?int $points): self
     {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getPublishedAt(): ?\DateTimeInterface
-    {
-        return $this->published_at;
-    }
-
-    public function setPublishedAt(\DateTimeInterface $published_at): self
-    {
-        $this->published_at = $published_at;
+        $this->points = $points;
 
         return $this;
     }
@@ -113,7 +96,7 @@ class Evenement
     {
         if (!$this->inscrits->contains($inscrit)) {
             $this->inscrits[] = $inscrit;
-            $inscrit->setEvenement($this);
+            $inscrit->setMaison($this);
         }
 
         return $this;
@@ -124,8 +107,8 @@ class Evenement
         if ($this->inscrits->contains($inscrit)) {
             $this->inscrits->removeElement($inscrit);
             // set the owning side to null (unless already changed)
-            if ($inscrit->getEvenement() === $this) {
-                $inscrit->setEvenement(null);
+            if ($inscrit->getMaison() === $this) {
+                $inscrit->setMaison(null);
             }
         }
 

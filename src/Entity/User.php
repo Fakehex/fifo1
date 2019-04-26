@@ -221,6 +221,11 @@ class User implements UserInterface
     private $statut;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Joueur", mappedBy="user")
+     */
+    private $joueurs;
+
+    /**
      * @return string
      */
     public function getResetToken(): string
@@ -292,6 +297,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($correction->getUser() === $this) {
                 $correction->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Joueur[]
+     */
+    public function getJoueurs(): Collection
+    {
+        return $this->joueurs;
+    }
+
+    public function addJoueur(Joueur $joueur): self
+    {
+        if (!$this->joueurs->contains($joueur)) {
+            $this->joueurs[] = $joueur;
+            $joueur->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJoueur(Joueur $joueur): self
+    {
+        if ($this->joueurs->contains($joueur)) {
+            $this->joueurs->removeElement($joueur);
+            // set the owning side to null (unless already changed)
+            if ($joueur->getUser() === $this) {
+                $joueur->setUser(null);
             }
         }
 

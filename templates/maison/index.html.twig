@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Maison index{% endblock %}
+
+{% block body %}
+    <h1>Maison index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for maison in maisons %}
+            <tr>
+                <td>{{ maison.id }}</td>
+                <td>{{ maison.nom }}</td>
+                <td>{{ maison.Description }}</td>
+                <td>{{ maison.points }}</td>
+                <td>
+                    <a href="{{ path('maison_show', {'id': maison.id}) }}">show</a>
+                    <a href="{{ path('maison_edit', {'id': maison.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('maison_new') }}">Create new</a>
+{% endblock %}

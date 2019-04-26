@@ -2,53 +2,97 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Evenement;
-use App\Entity\User;
+use App\Form\EvenementType;
+use App\Repository\EvenementRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/admin/evenement")
+ */
 class EvenementController extends AbstractController
 {
     /**
-     * @Route("/evenement", name="evenement")
+     * @Route("/", name="evenement_index", methods={"GET"})
      */
-    public function index()
+    public function index(EvenementRepository $evenementRepository): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $user1 = $entityManager->getRepository(User::class)->find(1);
-        $user2 = $entityManager->getRepository(User::class)->find(2);
-
-        $event = new Evenement();
-        $event->setTitre("secondTry avec users");
-        $event->setTexte("yeah body light weight");
-        $event->addParticipant($user1);
-        $event->addParticipant($user2);
-
-        // tell Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($event);
-
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-
-        return new Response('Saved new product with id '.$event->getId().' et les texte '.$event->getTexte());
+        return $this->render('evenement/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
+        ]);
     }
 
     /**
-     * @Route("/evenement/{id}", name="evenemnt_show")
+     * @Route("/new", name="evenement_new", methods={"GET","POST"})
      */
-    public function show($id)
+    public function new(Request $request): Response
     {
-        $event = $this->getDoctrine()
-            ->getRepository(Evenement::class)
-            ->find($id);
+        $evenement = new Evenement();
+        $form = $this->createForm(EvenementType::class, $evenement);
+        $form->handleRequest($request);
 
-        if (!$event) {
-            throw $this->createNotFoundException(
-                "pas d'event pour " . $id
-            );
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($evenement);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('evenement_index');
         }
 
-        return new Response('Vla le grand event : ' . $event->getTitre());
+        return $this->render('evenement/new.html.twig', [
+            'evenement' => $evenement,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="evenement_show", methods={"GET"})
+     */
+    public function show(Evenement $evenement): Response
+    {
+        $inscrits = $evenement->getInscrits();
+        return $this->render('evenement/show.html.twig', [
+            'evenement' => $evenement,
+            'inscrits' => $inscrits,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="evenement_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Evenement $evenement): Response
+    {
+        $form = $this->createForm(EvenementType::class, $evenement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('evenement_index', [
+                'id' => $evenement->getId(),
+            ]);
+        }
+
+        return $this->render('evenement/edit.html.twig', [
+            'evenement' => $evenement,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="evenement_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Evenement $evenement): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$evenement->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($evenement);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('evenement_index');
     }
 }

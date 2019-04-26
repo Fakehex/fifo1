@@ -40,3 +40,4 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/forum/nouveau/*, roles: ROLE_USER }
          - { path: ^/archives/ajouterCorrection/*, roles: ROLE_USER }
+         - { path: ^/evenement/inscription/*, roles: ROLE_USER }
