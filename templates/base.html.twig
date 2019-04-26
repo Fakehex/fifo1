@@ -34,6 +34,16 @@
   </header>
   <div class="divider"></div>
   <!-- / header -->
+  {% for message in app.flashes('danger') %}
+          <div class="alert alert-danger">
+              {{ message }}
+          </div>
+  {% endfor %}
+  {% for message in app.flashes('success') %}
+          <div class="alert alert-success">
+              {{ message }}
+          </div>
+  {% endfor %}
   {% block body %}{% endblock %}
   {% block footer %}
   <footer id="footer">

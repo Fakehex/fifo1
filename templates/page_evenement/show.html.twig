@@ -27,9 +27,28 @@
                 <th>Nombre d'incrits</th>
                 <td>{{ inscrits|length }}</td>
             </tr>
+            <tr>
+              {% if connecte %}
+                {% if evenement.NbInscrits > 1 %}
+                <th>Inscrire mon equipe</th>
+                <td>
+                  {{ form_start(form) }}
+                      {{ form_widget(form) }}
+                      <button class="btn">{{ button_label|default('Inscrire mon Equipe') }}</button>
+                  {{ form_end(form) }}
+                </td>
+                {% else %}
+                  <th>Inscription</th>
+                  <td>
+                    <a href="{{ path('inscription', {'id': evenement.id}) }}">s'inscrire</a>
+                  </td>
+                {% endif %}
+              {% else %}
+                <th>Vous devez vous connecter pour vous inscrire</th>
+              {% endif %}
+            </tr>
         </tbody>
-    </table>
 
-    <a href="{{ path('inscription', {'id': evenement.id}) }}">inscription</a>
+    </table>
 
 {% endblock %}

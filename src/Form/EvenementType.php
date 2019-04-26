@@ -14,6 +14,7 @@ class EvenementType extends AbstractType
         $builder
             ->add('titre')
             ->add('texte')
+            ->add('NbInscrits')
             ->add('date')
             ->add('published_at')
         ;
