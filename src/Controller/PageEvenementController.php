@@ -27,6 +27,7 @@ class PageEvenementController extends AbstractController
             'evenements' => $evenementRepository->findAll(),
         ]);
     }
+
     /**
      * @Route("/{id}", name="evenement", methods={"GET","POST"})
      */
@@ -34,61 +35,66 @@ class PageEvenementController extends AbstractController
     {
       $inscrits = $evenement->getInscrits();
       $connecte = $request->getSession()->get('co');
+      $username = $request->getSession()->get('username');
+      $estInscrit = false;
+      if($connecte){
+        $user = $UserRepository->findOneBy(['username' => $username]);
+        $estInscrit = $user->estInscrit($evenement);
+        if($evenement->getNbInscrits()>1 && !$estInscrit){
 
-      if($evenement->getNbInscrits()>1){
+          $equipe = new Equipe();
+          $equipe->setEvenement($evenement);
 
-        $equipe = new Equipe();
-        $equipe->setEvenement($evenement);
-
-        $form = $this->createFormBuilder()
-          ->add('nomEquipe')
-          ->add('leader');
-        for($i = 1; $i < $evenement->getNbInscrits(); $i++){
-          $form->add('joueur'.$i);
-        }
-        $form = $form->getForm();
-
-        $form->handleRequest($request);
-        $entityManager = $this->getDoctrine()->getManager();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-          // data is an array with "joueur1", "joueur2"..., and "leader" keys
-          $data = $form->getData();
-          $equipe->setNom($data['nomEquipe']);
-          $username = $request->getSession()->get('username');
-          $user = $UserRepository->findOneBy(['username' => $username]);
-
-          $joueur = new Joueur();
-          $joueur->setNom($data['leader']);
-          $joueur->setUser($user);
-          $joueur->setEvenement($evenement);
-          $joueur->setEquipe($equipe);
-          $equipe->setLeader($joueur);
-
+          $form = $this->createFormBuilder()
+            ->add('nomEquipe')
+            ->add('leader');
           for($i = 1; $i < $evenement->getNbInscrits(); $i++){
-            $joueur = new Joueur();
-            $joueur->setNom($data['joueur'.$i]);
-            $joueur->setEvenement($evenement);
-            $entityManager->persist($joueur);
-            $equipe->addJoueur($joueur);
-
+            $form->add('joueur'.$i);
           }
-          $entityManager->persist($equipe);
-          $entityManager->flush();
-        }
-          $this->addFlash('success', 'Votre equipe est mainteant inscrit !');
-        return $this->render('page_evenement/show.html.twig', [
-            'evenement' => $evenement,
-            'inscrits' => $inscrits,
-            'connecte' => $connecte,
-            'form' => $form->createView(),
-        ]);
-      }
+          $form = $form->getForm();
 
+          $form->handleRequest($request);
+          $entityManager = $this->getDoctrine()->getManager();
+
+          if ($form->isSubmitted() && $form->isValid()) {
+            // data is an array with "joueur1", "joueur2"..., and "leader" keys
+            $data = $form->getData();
+            $equipe->setNom($data['nomEquipe']);
+
+
+            $joueur = new Joueur();
+            $joueur->setNom($data['leader']);
+            $joueur->setUser($user);
+            $joueur->setEvenement($evenement);
+            $joueur->setEquipe($equipe);
+            $equipe->setLeader($joueur);
+
+            for($i = 1; $i < $evenement->getNbInscrits(); $i++){
+              $joueur = new Joueur();
+              $joueur->setNom($data['joueur'.$i]);
+              $joueur->setEvenement($evenement);
+              $entityManager->persist($joueur);
+              $equipe->addJoueur($joueur);
+
+            }
+            $entityManager->persist($equipe);
+            $entityManager->flush();
+          }
+            $this->addFlash('success', 'Votre equipe est mainteant inscrit !');
+          return $this->render('page_evenement/show.html.twig', [
+              'evenement' => $evenement,
+              'inscrits' => $inscrits,
+              'connecte' => $connecte,
+              'form' => $form->createView(),
+              'estInscrit' => $estInscrit,
+          ]);
+        }
+      }
         return $this->render('page_evenement/show.html.twig', [
             'evenement' => $evenement,
             'inscrits' => $inscrits,
             'connecte' => $connecte,
+            'estInscrit' => $estInscrit,
         ]);
     }
     /**

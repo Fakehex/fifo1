@@ -333,6 +333,14 @@ class User implements UserInterface
 
         return $this;
     }
+    public function estInscrit($evenement){
+      foreach ($this->getJoueurs() as $key) {
+        if($key->getEvenement()->getId() == $evenement->getId()){
+          return true;
+        }
+      }
+      return false;
+    }
 
     public function getPrenom(): ?string
     {
