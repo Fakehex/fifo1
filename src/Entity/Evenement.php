@@ -43,6 +43,11 @@ class Evenement
      */
     private $inscrits;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $NbInscrits;
+
     public function __construct()
     {
         $this->inscrits = new ArrayCollection();
@@ -128,6 +133,18 @@ class Evenement
                 $inscrit->setEvenement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNbInscrits(): ?int
+    {
+        return $this->NbInscrits;
+    }
+
+    public function setNbInscrits(int $NbInscrits): self
+    {
+        $this->NbInscrits = $NbInscrits;
 
         return $this;
     }
