@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MatchRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DuelRepository")
  */
-class Match
+class Duel
 {
     /**
      * @ORM\Id()
@@ -17,7 +17,7 @@ class Match
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Inscrit", inversedBy="matches")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Inscrit", inversedBy="duels")
      */
     private $inscrit1;
 
@@ -29,12 +29,12 @@ class Match
     /**
      * @ORM\Column(type="integer")
      */
-    private $scoreEquipe1;
+    private $scoreInscrit1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $scoreEquipe2;
+    private $scoreInscrit2;
 
     /**
      * @ORM\Column(type="integer")
@@ -70,33 +70,26 @@ class Match
         return $this;
     }
 
-    public function getScoreEquipe1(): ?int
+    public function getScoreInscrit1(): ?int
     {
-        return $this->scoreEquipe1;
-    }
-    public function getScoreEquipe2(): ?int
-    {
-        return $this->scoreEquipe2;
+        return $this->scoreInscrit1;
     }
 
-
-    public function setScore(int $score1, int $score2): self
+    public function setScoreInscrit1(int $scoreInscrit1): self
     {
-        $this->scoreEquipe1 = $score1;
-        $this->scoreEquipe2 = $score2;
-
-        return $this;
-    }
-    public function setScoreEquipe1(int $score): self
-    {
-        $this->scoreEquipe1 = $score;
+        $this->scoreInscrit1 = $scoreInscrit1;
 
         return $this;
     }
 
-    public function setScoreEquipe2(int $score): self
+    public function getScoreInscrit2(): ?int
     {
-        $this->scoreEquipe2 = $score;
+        return $this->scoreInscrit2;
+    }
+
+    public function setScoreInscrit2(int $scoreInscrit2): self
+    {
+        $this->scoreInscrit2 = $scoreInscrit2;
 
         return $this;
     }
@@ -115,12 +108,11 @@ class Match
 
     public function getGagnant(): ?Inscrit
     {
-        if($this->scoreEquipe1 < $this->scoreEquipe2){
+        if($this->scoreInscrit1 < $this->scoreInscrit2){
             return $this->inscrit2;
         }
         else{
             return $this->inscrit1;
         }
     }
-
 }

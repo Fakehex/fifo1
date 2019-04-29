@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Duel{% endblock %}
+
+{% block body %}
+    <h1>Edit Duel</h1>
+
+    {{ include('duel/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('duel_index') }}">back to list</a>
+
+    {{ include('duel/_delete_form.html.twig') }}
+{% endblock %}

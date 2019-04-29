@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Duel{% endblock %}
+
+{% block body %}
+    <h1>Create new Duel</h1>
+
+    {{ include('duel/_form.html.twig') }}
+
+    <a href="{{ path('duel_index') }}">back to list</a>
+{% endblock %}

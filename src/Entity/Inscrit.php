@@ -18,12 +18,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Inscrit
 {
-  /**
-   * @ORM\Id()
-   * @ORM\GeneratedValue()
-   * @ORM\Column(type="integer")
-   */
-  private $id;
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -42,14 +42,15 @@ class Inscrit
     private $evenement;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="inscrit1")
+     * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="inscrit1")
      */
-    private $matches;
+    private $duels;
 
     public function __construct()
     {
-        $this->matches = new ArrayCollection();
+        $this->duels = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -93,30 +94,30 @@ class Inscrit
     }
 
     /**
-     * @return Collection|Match[]
+     * @return Collection|Duel[]
      */
-    public function getMatches(): Collection
+    public function getDuels(): Collection
     {
-        return $this->matches;
+        return $this->duels;
     }
 
-    public function addMatch(Match $match): self
+    public function addDuel(Duel $duel): self
     {
-        if (!$this->matches->contains($match)) {
-            $this->matches[] = $match;
-            $match->setInscrit1($this);
+        if (!$this->duels->contains($duel)) {
+            $this->duels[] = $duel;
+            $duel->setInscrit1($this);
         }
 
         return $this;
     }
 
-    public function removeMatch(Match $match): self
+    public function removeDuel(Duel $duel): self
     {
-        if ($this->matches->contains($match)) {
-            $this->matches->removeElement($match);
+        if ($this->duels->contains($duel)) {
+            $this->duels->removeElement($duel);
             // set the owning side to null (unless already changed)
-            if ($match->getInscrit1() === $this) {
-                $match->setInscrit1(null);
+            if ($duel->getInscrit1() === $this) {
+                $duel->setInscrit1(null);
             }
         }
 

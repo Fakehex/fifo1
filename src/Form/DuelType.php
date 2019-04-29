@@ -2,17 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Match;
+use App\Entity\Duel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MatchType extends AbstractType
+class DuelType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('score')
+            ->add('scoreInscrit1')
+            ->add('scoreInscrit2')
             ->add('tour')
             ->add('inscrit1')
             ->add('inscrit2')
@@ -22,7 +23,7 @@ class MatchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Match::class,
+            'data_class' => Duel::class,
         ]);
     }
 }
