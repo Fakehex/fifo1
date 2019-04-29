@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
  /**
@@ -38,6 +40,16 @@ class Inscrit
      * @ORM\JoinColumn(nullable=false)
      */
     private $evenement;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="inscrit1")
+     */
+    private $matches;
+
+    public function __construct()
+    {
+        $this->matches = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +88,37 @@ class Inscrit
     public function setEvenement(?Evenement $evenement): self
     {
         $this->evenement = $evenement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Match[]
+     */
+    public function getMatches(): Collection
+    {
+        return $this->matches;
+    }
+
+    public function addMatch(Match $match): self
+    {
+        if (!$this->matches->contains($match)) {
+            $this->matches[] = $match;
+            $match->setInscrit1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Match $match): self
+    {
+        if ($this->matches->contains($match)) {
+            $this->matches->removeElement($match);
+            // set the owning side to null (unless already changed)
+            if ($match->getInscrit1() === $this) {
+                $match->setInscrit1(null);
+            }
+        }
 
         return $this;
     }

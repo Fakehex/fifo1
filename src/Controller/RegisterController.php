@@ -31,7 +31,8 @@ class RegisterController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $this->addFlash('notice', 'Votre compte est créé'
+            );
             return $this->redirectToRoute('accueil');
         }
 
