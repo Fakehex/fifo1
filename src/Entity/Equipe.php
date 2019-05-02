@@ -28,6 +28,10 @@ class Equipe extends Inscrit
         $this->Joueurs = new ArrayCollection();
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9773c5b726eda94c19b68c615d36edf1b60a4cf3
     /**
      * @return Collection|Joueur[]
      */
