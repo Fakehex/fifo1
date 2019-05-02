@@ -41,6 +41,13 @@ class Duel
      */
     private $tour;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Bracket", inversedBy="duels")
+     */
+    private $bracket;
+
+    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,5 +121,17 @@ class Duel
         else{
             return $this->inscrit1;
         }
+    }
+
+    public function getBracket(): ?Bracket
+    {
+        return $this->bracket;
+    }
+
+    public function setBracket(?Bracket $bracket): self
+    {
+        $this->bracket = $bracket;
+
+        return $this;
     }
 }
