@@ -28,10 +28,6 @@ class Equipe extends Inscrit
         $this->Joueurs = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
      * @return Collection|Joueur[]
