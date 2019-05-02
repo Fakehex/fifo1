@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Evenement;
+use App\Entity\Tournoi;
 use App\Form\EvenementType;
+use App\Form\TournoiType;
 use App\Repository\EvenementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +45,28 @@ class EvenementController extends AbstractController
         }
 
         return $this->render('evenement/new.html.twig', [
+            'evenement' => $evenement,
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/newTournoi", name="tournoi_new", methods={"GET","POST"})
+     */
+    public function newTournoi(Request $request): Response
+    {
+        $evenement = new Tournoi();
+        $form = $this->createForm(TournoiType::class, $evenement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($evenement);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('evenement_index');
+        }
+
+        return $this->render('evenement/newTournoi.html.twig', [
             'evenement' => $evenement,
             'form' => $form->createView(),
         ]);

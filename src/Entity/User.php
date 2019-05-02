@@ -334,8 +334,8 @@ class User implements UserInterface
         return $this;
     }
     public function estInscrit($evenement){
-      foreach ($this->getJoueurs() as $key) {
-        if($key->getEvenement()->getId() == $evenement->getId()){
+      foreach ($this->getJoueurs() as $joueur) {
+        if($joueur->getEvenement()->getId() == $evenement->getId()){
           return true;
         }
       }

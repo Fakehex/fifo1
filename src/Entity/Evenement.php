@@ -9,8 +9,14 @@ use App\Entity\User;
 
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EvenementRepository")
- */
+* @ORM\Entity(repositoryClass="App\Repository\EvenementRepository")
+* @ORM\InheritanceType("SINGLE_TABLE")
+* @ORM\DiscriminatorColumn(name="type", type="string")
+* @ORM\DiscriminatorMap({
+*     "evenement"="Evenement",
+*     "tournoi"="Tournoi"
+* })
+*/
 class Evenement
 {
     /**
@@ -138,7 +144,7 @@ class Evenement
 
         return $this;
     }
-    
+
     public function getNbInscrits(): ?int
     {
         return $this->NbInscrits;

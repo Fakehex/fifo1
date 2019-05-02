@@ -29,6 +29,11 @@ class Bracket
      */
     private $duels;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Tournoi", mappedBy="bracket", cascade={"persist", "remove"})
+     */
+    private $tournoi;
+
     public function __construct()
     {
         $this->duels = new ArrayCollection();
@@ -60,6 +65,24 @@ class Bracket
             if ($duel->getBracket() === $this) {
                 $duel->setBracket(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getTournoi(): ?Tournoi
+    {
+        return $this->tournoi;
+    }
+
+    public function setTournoi(?Tournoi $tournoi): self
+    {
+        $this->tournoi = $tournoi;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newBracket = $tournoi === null ? null : $this;
+        if ($newBracket !== $tournoi->getBracket()) {
+            $tournoi->setBracket($newBracket);
         }
 
         return $this;
