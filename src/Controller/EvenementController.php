@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Evenement;
 use App\Entity\Tournoi;
+use App\Entity\Duel;
+use App\Entity\BracketDirect;
 use App\Form\EvenementType;
 use App\Form\TournoiType;
 use App\Repository\EvenementRepository;
@@ -119,4 +121,70 @@ class EvenementController extends AbstractController
 
         return $this->redirectToRoute('evenement_index');
     }
+
+    /**
+     * @Route("/initialiserBracketDirect/{id}", name="initialiserBracketDirect", methods={"GET"})
+     */
+    public function constructBracketDirect(Evenement $evenement){
+      $bracketDirect = new BracketDirect();
+      $inscrits = $evenement->getInscrits();
+      $entityManager = $this->getDoctrine()->getManager();
+
+      for($i = 0; $i < sizeof($inscrits); $i = $i+2){
+          $duel = new Duel();
+          $duel->setInscrit1($inscrits[$i]);
+          $duel->setInscrit2($inscrits[$i+1]);
+          $duel->setTour(1);
+          $duel->setScoreInscrit1(0);
+          $duel->setScoreInscrit2(0);
+
+          $entityManager->persist($duel);
+          $bracketDirect->addDuel($duel);
+      }
+      $evenement->setBracket($bracketDirect);
+      $entityManager->persist($evenement);
+      $entityManager->persist($bracketDirect);
+      $entityManager->flush();
+
+      $this->addFlash('success', 'Initialisation du tournoi terminé');
+
+      return $this->render('evenement/show.html.twig', [
+          'evenement' => $evenement,
+          'inscrits' => $inscrits,
+      ]);
+
+    }
+    /**
+     * @Route("/tourSuivantBracketDirect/{id}", name="tourSuivantBracketDirect", methods={"GET"})
+     */
+      public function tourSuivantBracketDirect(Evenement $evenement){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $bracket = $evenement->getBracket();
+        $inscrits = $evenement->getInscrits();
+        $duels = $bracket->getDuels();
+        $duel = new Duel();
+        // gerer les TOURS ICI ( verifier a quel tour on est pour utiliser les duels du dernier tour seulement )
+        // 
+        for($i = 0; $i < sizeof($duels) ; $i = $i+2) {
+          $duel = new Duel();
+          $duel->setInscrit1($duels[0]->getGagnant());
+          $duel->setInscrit2($duels[1]->getGagnant());
+          $duel->setTour($duels[1]->getTour() + 1 );
+          $duel->setScoreInscrit1(0);
+          $duel->setScoreInscrit2(0);
+
+          $entityManager->persist($duel);
+          $bracket->addDuel($duel);
+        }
+        $entityManager->persist($bracket);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le tournoi est au tour '. $duel->getTour());
+        return $this->render('evenement/show.html.twig', [
+            'evenement' => $evenement,
+            'inscrits' => $inscrits,
+        ]);
+      }
 }

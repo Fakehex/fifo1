@@ -31,7 +31,24 @@
                 <th>Nombre d'incrits</th>
                 <td>{{ inscrits|length }}</td>
             </tr>
+            <tr>
+                <th>Initialiser Bracket Direct </th>
+                <td>  <a href="{{ path('initialiserBracketDirect', {'id': evenement.id}) }}">Initialiser</a> </td>
+            </tr>
+            <tr>
+                <th>Tour suivant</th>
+                <td> <a href="{{ path('tourSuivantBracketDirect', {'id': evenement.id}) }}">Tour suivant</a> </td>
+            </tr>
         </tbody>
+    </table>
+    <table>
+        {% if evenement.isTournoi == true %}
+          {% for duel in evenement.bracket.duels %}
+            <tr>
+                {{ duel.inscrit1.nom }} VS {{ duel.inscrit2.nom }}
+            </tr>
+          {% endfor %}
+        {% endif %}
     </table>
 
     <a href="{{ path('evenement_index') }}">back to list</a>

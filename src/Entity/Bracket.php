@@ -34,6 +34,11 @@ class Bracket
      */
     private $tournoi;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $tourActuel;
+
     public function __construct()
     {
         $this->duels = new ArrayCollection();
@@ -84,6 +89,18 @@ class Bracket
         if ($newBracket !== $tournoi->getBracket()) {
             $tournoi->setBracket($newBracket);
         }
+
+        return $this;
+    }
+
+    public function getTourActuel(): ?int
+    {
+        return $this->tourActuel;
+    }
+
+    public function setTourActuel(int $tourActuel): self
+    {
+        $this->tourActuel = $tourActuel;
 
         return $this;
     }

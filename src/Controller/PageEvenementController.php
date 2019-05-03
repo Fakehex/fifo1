@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Evenement;
 use App\Entity\Joueur;
-use App\Entity\BracketDirect;
 use App\Entity\Equipe;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
@@ -139,38 +138,5 @@ class PageEvenementController extends AbstractController
         ]);
     }
 
-    public function constructBracketDirect($inscrits){
-      $bracketDirect = new BracketDirect();
 
-      $entityManager = $this->getDoctrine()->getManager();
-
-      for($i = 0; $i < sizeof($inscrits); $i = $i+2){
-          $duel = new Duel();
-          $duel->setInscrit1($inscrits[$i]);
-          $duel->setInscrit1($inscrits[$i+1]);
-          $duel->setTour(1);
-
-          $entityManager->persist($duel);
-          $bracketDirect->addDuel($duel);
-      }
-      $entityManager->persist($duel);
-      $entityManager->flush();
-    }
-    /**
-     * @Route("/{id}", name="tourSuivantBracketDirect", methods={"GET"})
-     */
-      public function tourSuivantBracketDirect(BracketDirect $bracket){
-        $duels = $bracket->getDuels();
-
-        for($i = 0; $i < sizeof($duels) ; $i = $i+2) {
-          $duel = new Duel();
-          $duel->setInscrit1($duels[$i]->getGagnant());
-          $duel->setInscrit2($duels[$i+1]->getGagnant());
-          $duel->setTour($duels[$i]->getTour() + 1 );
-          $entityManager->persist($duel);
-          $bracket->addDuel($duel);
-        }
-        $entityManager->persist($duel);
-        $entityManager->flush();
-      }
 }

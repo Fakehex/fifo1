@@ -56,6 +56,11 @@ class Evenement
      */
     private $NbInscrits;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isTournoi;
+
     public function __construct()
     {
         $this->inscrits = new ArrayCollection();
@@ -156,4 +161,18 @@ class Evenement
 
         return $this;
     }
+
+    public function getIsTournoi(): ?bool
+    {
+        return $this->isTournoi;
+    }
+
+    public function setIsTournoi(bool $isTournoi): self
+    {
+        $this->isTournoi = $isTournoi;
+
+        return $this;
+    }
+
+  
 }
