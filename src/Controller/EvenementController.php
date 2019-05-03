@@ -166,7 +166,7 @@ class EvenementController extends AbstractController
         $duels = $bracket->getDuels();
         $duel = new Duel();
         // gerer les TOURS ICI ( verifier a quel tour on est pour utiliser les duels du dernier tour seulement )
-        // 
+        // ajouter tour actuel dans bracket
         for($i = 0; $i < sizeof($duels) ; $i = $i+2) {
           $duel = new Duel();
           $duel->setInscrit1($duels[0]->getGagnant());
