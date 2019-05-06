@@ -46,7 +46,7 @@ class Duel
      */
     private $bracket;
 
-    
+
 
     public function getId(): ?int
     {
@@ -100,7 +100,13 @@ class Duel
 
         return $this;
     }
+    public function initScore(): self //initialise a 0 les scores
+    {
+        $this->scoreInscrit1 = 0;
+        $this->scoreInscrit2 = 0;
 
+        return $this;
+    }
     public function getTour(): ?int
     {
         return $this->tour;
@@ -114,7 +120,9 @@ class Duel
     }
 
     public function getGagnant(): ?Inscrit
-    {
+    {   if($this->inscrit2 == null ){
+          return $this->inscrit1;
+        }
         if($this->scoreInscrit1 < $this->scoreInscrit2){
             return $this->inscrit2;
         }

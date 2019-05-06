@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  * @Route("/admin/evenement")
@@ -125,28 +127,86 @@ class EvenementController extends AbstractController
     /**
      * @Route("/initialiserBracketDirect/{id}", name="initialiserBracketDirect", methods={"GET"})
      */
-    public function constructBracketDirect(Evenement $evenement){
+    public function constructBracketDirect2(Evenement $evenement){
       $bracketDirect = new BracketDirect();
+      $bracketDirect->setTourActuel(1);
       $inscrits = $evenement->getInscrits();
+      $nbInscrits = sizeof($inscrits);
       $entityManager = $this->getDoctrine()->getManager();
+      $numTour = 1;
+      // Y c'est la puissance de 2 inferieur (au nombre d'inscrits)
+      //et X est le nombre de participants supplementaire pour correspondre a notre nombre d'inscrits
+      $y = 2;
+      while($y < ($nbInscrits/2)){
+        $y = $y*2;
+      }
+      $x = $nbInscrits - $y;
 
-      for($i = 0; $i < sizeof($inscrits); $i = $i+2){
+      $n = 0; // N est le numero de du prochain joueur a inscrire
+
+      // LE PREMIER TOUR -> INITIALISATION
+      for($i=0 ; $i < $x ; ++$i){
+        $duel = new Duel();
+        $duel->setInscrit1($inscrits[$n++]);
+        $duel->setInscrit2($inscrits[$n++]);
+        $duel->setTour($numTour);
+        $duel->initScore();
+
+        $entityManager->persist($duel);
+        $bracketDirect->addDuel($duel);
+      }
+
+      $numTour++;
+      // LE TOUR NUMERO 2 -> INITIALISATION
+      $tour2;
+      for($i=0 ; $i < $y/2 ; $i++){
+        $duel = new Duel();
+        $duel->setTour($numTour);
+        $duel->initScore();
+
+        $tour2[$i]= $duel;
+      }
+      //Remplir le tour 2
+      $secondeBoucle = false;
+      while($n < $nbInscrits) {
+        $i=0;
+        while(($n < $nbInscrits) && ($i < $y/2)){
+            $duel = $tour2[$i];
+            if($secondeBoucle){
+              $duel->setInscrit2($inscrits[$n++]);
+            }else{
+              $duel->setInscrit1($inscrits[$n++]);
+            }
+            $tour2[$i]= $duel;
+            $i++;
+        }
+        $secondeBoucle = true;
+      }
+      //ajout des duels tour2 dans le bracket
+      foreach($tour2 as $duel){
+        $entityManager->persist($duel);
+        $bracketDirect->addDuel($duel);
+      }
+      //generer tout les autres tours :
+      $y=$y/2;
+      while($y >= 2){
+        $y /= 2;
+        $numTour++;
+        for($i = 0; $i < $y; ++$i){
           $duel = new Duel();
-          $duel->setInscrit1($inscrits[$i]);
-          $duel->setInscrit2($inscrits[$i+1]);
-          $duel->setTour(1);
-          $duel->setScoreInscrit1(0);
-          $duel->setScoreInscrit2(0);
-
+          $duel->setTour($numTour);
+          $duel->initScore();
           $entityManager->persist($duel);
           $bracketDirect->addDuel($duel);
+        }
       }
+
       $evenement->setBracket($bracketDirect);
       $entityManager->persist($evenement);
       $entityManager->persist($bracketDirect);
       $entityManager->flush();
 
-      $this->addFlash('success', 'Initialisation du tournoi terminé');
+      $this->addFlash('success', 'voila Y : '.$y);
 
       return $this->render('evenement/show.html.twig', [
           'evenement' => $evenement,
@@ -154,12 +214,14 @@ class EvenementController extends AbstractController
       ]);
 
     }
+
+
     /**
      * @Route("/tourSuivantBracketDirect/{id}", name="tourSuivantBracketDirect", methods={"GET"})
      */
       public function tourSuivantBracketDirect(Evenement $evenement){
 
-        $entityManager = $this->getDoctrine()->getManager();
+      /*  $entityManager = $this->getDoctrine()->getManager();
 
         $bracket = $evenement->getBracket();
         $inscrits = $evenement->getInscrits();
@@ -167,11 +229,24 @@ class EvenementController extends AbstractController
         $duel = new Duel();
         // gerer les TOURS ICI ( verifier a quel tour on est pour utiliser les duels du dernier tour seulement )
         // ajouter tour actuel dans bracket
-        for($i = 0; $i < sizeof($duels) ; $i = $i+2) {
+        $tourPrecedent = $bracketDirect->getTourActuel();
+        $bracketDirect->setTourActuel($tourPrecedent + 1);
+
+        $gagnants = new Array();
+        foreach ($duels as $duel) {
+          if($duel->getTour() == $tourPrecedent){
+            $gagnants->add($duel->getGagnant());
+          }
+        }
+
+        for($i = 0; $i < sizeof($gagnants) ; $i = $i+1) {
           $duel = new Duel();
-          $duel->setInscrit1($duels[0]->getGagnant());
-          $duel->setInscrit2($duels[1]->getGagnant());
-          $duel->setTour($duels[1]->getTour() + 1 );
+          $duel->setInscrit1($gagnants[$i];
+          if(sizeof($gagnants) < $i+1 ){
+            $i = $i+1;
+            $duel->setInscrit2($gagnants[$i]);
+          }
+          $duel->setTour();
           $duel->setScoreInscrit1(0);
           $duel->setScoreInscrit2(0);
 
@@ -180,7 +255,7 @@ class EvenementController extends AbstractController
         }
         $entityManager->persist($bracket);
         $entityManager->flush();
-
+        */
         $this->addFlash('success', 'Le tournoi est au tour '. $duel->getTour());
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
