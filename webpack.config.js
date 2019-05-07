@@ -19,7 +19,6 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
-    //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
     .enableSassLoader()
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
