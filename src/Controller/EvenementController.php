@@ -123,6 +123,14 @@ class EvenementController extends AbstractController
 
         return $this->redirectToRoute('evenement_index');
     }
+    /**
+     * @Route("/affiche_bracket/{id}", name="affiche_bracket", methods={"GET"})
+     */
+    public function affiche_bracket(Evenement $evenement){
+      return $this->render('evenement/bracket.html.twig', [
+          'evenement' => $evenement,
+      ]);
+    }
 
     /**
      * @Route("/initialiserBracketDirect/{id}", name="initialiserBracketDirect", methods={"GET"})
