@@ -1,35 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Evenement{% endblock %}
+{% block title %}Bracket{% endblock %}
 
 {% block body %}
-  <script
-  			  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  			  crossorigin="anonymous">
-  </script>
 <h1 id="test">Bracket</h1>
-<div class="container mb-5">
-  <div class="tournament"></div>
+<div class="container mb-3">
+  <div >
+
+  {% if evenement.isTournoi == true %}
+    {% for duel in evenement.bracket.duels %}
+        <div class="col-sm-3">
+            <table class="table table-dark table-bordered">
+              {% if  duel.Inscrit1 %}
+                <tr>
+                  <th scope="row">{{ duel.Inscrit1.nom}}</th>
+                  <td>{{ duel.ScoreInscrit1 }}</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <th scope="row"> INCONNU </th>
+                  <td>0</td>
+                </tr>
+              {% endif %}
+              {% if  duel.Inscrit2 %}
+                <tr>
+                  <th scope="row">{{ duel.Inscrit2.nom}}</th>
+                  <td>{{ duel.ScoreInscrit2 }}</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <th scope="row"> INCONNU </th>
+                  <td>0</td>
+                </tr>
+              {% endif %}
+            </table>
+        </div>
+
+    {% endfor %}
+  {% endif %}
+  </div >
 </div>
 
 
-    <script>
-    var minimalData = {
-    teams : [
-      ["Team 1", "Team 2"], /* first matchup */
-      ["Team 3", "Team 4"]  /* second matchup */
-    ],
-    results : [
-      [[1,2], [3,4]],       /* first round */
-      [[4,6], [2,1]]        /* second round */
-    ]
-  }
 
-  $(function() {
-    $('.tournament').bracket({
-      init: minimalData /* data to initialize the bracket with */ })
-  })
-    </script>
 
 {% endblock %}

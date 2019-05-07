@@ -127,7 +127,9 @@ class EvenementController extends AbstractController
      * @Route("/affiche_bracket/{id}", name="affiche_bracket", methods={"GET"})
      */
     public function affiche_bracket(Evenement $evenement){
-      return $this->render('bracket.html.twig');
+      return $this->render('bracket.html.twig',[
+        'evenement' => $evenement
+      ]);
     }
 
     /**
