@@ -219,9 +219,68 @@ class EvenementController extends AbstractController
     /**
      * @Route("/tourSuivantBracketDirect/{id}", name="tourSuivantBracketDirect", methods={"GET"})
      */
-      public function tourSuivantBracketDirect(Evenement $evenement){
+     public function tourSuivantBracketDirect(Evenement $evenement){
+       $entityManager = $this->getDoctrine()->getManager();
+       $bracketDirect = $evenement->getBracket();
+       $inscrits = $evenement->getInscrits();
+       $duels = $bracketDirect->getDuels();
 
-      /*  $entityManager = $this->getDoctrine()->getManager();
+       $tourPrecedent = $bracketDirect->getTourActuel();
+       $bracketDirect->setTourActuel($tourPrecedent + 1);
+
+       $gagnants;
+       $i = 0;
+       foreach ($duels as $duel) {
+         if($duel->getTour() == $tourPrecedent){
+           $gagnants[$i++] = $duel->getGagnant();
+         }
+       }
+
+       $n = 0; //
+       $nbGagnants = sizeof($gagnants);
+       foreach ($duels as $duel) {
+         if($duel->getTour() == $tourPrecedent + 1 ){
+           if($duel->getInscrit1() == null){
+             if($n < $nbGagnants){
+               $duel->setInscrit1($gagnants[$n++]);
+               $entityManager->persist($duel);
+             }else{
+               $this->addFlash('danger', 'Pas assez de gagnants pour remplir le prochain tour');
+               return $this->render('evenement/show.html.twig', [
+                   'evenement' => $evenement,
+                   'inscrits' => $inscrits,
+               ]);
+             }
+             if($duel->getInscrit2() == null){
+               if($n < $nbGagnants){
+                 $duel->setInscrit2($gagnants[$n++]);
+                 $entityManager->persist($duel);
+               }else{
+                 $this->addFlash('danger', 'Pas assez de gagnants pour remplir le prochain tour');
+                 return $this->render('evenement/show.html.twig', [
+                     'evenement' => $evenement,
+                     'inscrits' => $inscrits,
+                 ]);
+               }
+             }
+           }
+         }
+       }
+
+       $entityManager->persist($bracketDirect);
+       $entityManager->flush();
+
+       $this->addFlash('success', 'Le tournoi est au tour '. $bracketDirect->getTourActuel());
+       return $this->render('evenement/show.html.twig', [
+           'evenement' => $evenement,
+           'inscrits' => $inscrits,
+       ]);
+
+
+     }
+    /*  public function tourSuivantBracketDirect(Evenement $evenement){
+
+        $entityManager = $this->getDoctrine()->getManager();
 
         $bracket = $evenement->getBracket();
         $inscrits = $evenement->getInscrits();
@@ -255,11 +314,11 @@ class EvenementController extends AbstractController
         }
         $entityManager->persist($bracket);
         $entityManager->flush();
-        */
-        $this->addFlash('success', 'Le tournoi est au tour '. $duel->getTour());
+
+        $this->addFlash('success', 'Le tournoi est au tour '. $bracketDirect->getTour());
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
             'inscrits' => $inscrits,
         ]);
-      }
+      }*/
 }

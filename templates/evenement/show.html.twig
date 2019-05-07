@@ -45,7 +45,7 @@
         {% if evenement.isTournoi == true %}
           {% for duel in evenement.bracket.duels %}
             <tr>
-                {{ duel.inscrit1.nom }} VS {{ duel.inscrit2.nom }}
+                {{ duel.id }} VS {{ duel.id }}
             </tr>
           {% endfor %}
         {% endif %}
