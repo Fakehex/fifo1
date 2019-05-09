@@ -11,18 +11,16 @@
 
 <h1>Bracket</h1>
 <div class="container">
-  <div class="row">
-    <div class="tour1 col-sm">
-      <p>Tour 1</p>
-    </div>
-    <div class="tour2 col-sm">
-      <p>Tour 2</p>
-    </div>
-    <div class="tour3 col-sm">
-      <p>Tour 3</p>
-    </div>
+	<div class="row">
+		{% for i in 1..nbTour %}
+		<div class="tour{{i}} col-sm">
+			<p>Tour {{i}}</p>
+		</div>
+		{% endfor %}
   </div>
 </div>
+
+
 
   {% if evenement.isTournoi == true %}
     {% for duel in evenement.bracket.duels %}
@@ -68,11 +66,13 @@
     {% for inscrit in inscrits %}
     <script>
     $(function() {
-        $('.inscrit' + {{inscrit.nom}} ).hover(function() {
-        $('.inscrit' + {{inscrit.nom}} ).css('background-color', 'yellow');
+        $('.inscrit' + "{{inscrit.nom}}" ).hover(function() {
+        $('.inscrit' + "{{inscrit.nom}}" ).css('background-color', 'pink');
+				$('.inscrit' + "{{inscrit.nom}}" ).css('color', 'black');
       }, function() {
         // on mouseout, reset the background colour
-        $('.inscrit' + {{inscrit.nom}} ).css('background-color', '');
+        $('.inscrit' + "{{inscrit.nom}}" ).css('background-color', '');
+				$('.inscrit' + "{{inscrit.nom}}" ).css('color', '');
       });
     });
     </script>

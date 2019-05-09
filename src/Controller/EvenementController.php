@@ -127,13 +127,33 @@ class EvenementController extends AbstractController
      * @Route("/affiche_bracket/{id}", name="affiche_bracket", methods={"GET"})
      */
     public function affiche_bracket(Evenement $evenement){
+       $bracketDirect = $evenement->getBracket();
+       $duels = $bracketDirect->getDuels();
+       $nbTour = 0;
+       foreach ($duels as $duel) {
+         if($duel->getTour() > $nbTour){
+           $nbTour = $duel->getTour();
+         }
+       }
       $inscrits = $evenement->getInscrits();
       return $this->render('bracket.html.twig',[
         'evenement' => $evenement,
-        'inscrits' => $inscrits
+        'inscrits' => $inscrits,
+        'nbTour' => $nbTour
       ]);
     }
-
+    /**
+     * @Route("/update_duels/{id}", name="update_duels", methods={"GET, POST"})
+     */
+    public function updateDuels(Evenement $evenement, Request $request){
+      $data = $request->request->get('form');
+      $inscrits = $evenement->getInscrits();
+      return $this->render('/evenement/updateDuels.html.twig',[
+        'evenement' => $evenement,
+        'inscrits' => $inscrits,
+        'nbTour' => $nbTour
+      ]);
+    }
     /**
      * @Route("/initialiserBracketDirect/{id}", name="initialiserBracketDirect", methods={"GET"})
      */
