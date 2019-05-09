@@ -337,7 +337,7 @@ class EvenementController extends AbstractController
      */
     public function constructBracketDouble(Evenement $evenement)
     {
-        $bracketDouble = new BracketDirect();
+        $bracketDouble = new BracketDouble();
         $bracketDouble->setTourActuel(1);
         $inscrits = $evenement->getInscrits();
         $nbInscrits = sizeof($inscrits);
