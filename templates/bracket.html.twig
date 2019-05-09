@@ -3,45 +3,83 @@
 {% block title %}Bracket{% endblock %}
 
 {% block body %}
-<h1 id="test">Bracket</h1>
-<div class="container mb-3">
-  <div >
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous">
+</script>
+
+<h1>Bracket</h1>
+<div class="container">
+  <div class="row">
+    <div class="tour1 col-sm">
+      <p>Tour 1</p>
+    </div>
+    <div class="tour2 col-sm">
+      <p>Tour 2</p>
+    </div>
+    <div class="tour3 col-sm">
+      <p>Tour 3</p>
+    </div>
+  </div>
+</div>
 
   {% if evenement.isTournoi == true %}
     {% for duel in evenement.bracket.duels %}
-        <div class="col-sm-3">
-            <table class="table table-dark table-bordered">
-              {% if  duel.Inscrit1 %}
-                <tr>
-                  <th scope="row">{{ duel.Inscrit1.nom}}</th>
-                  <td>{{ duel.ScoreInscrit1 }}</td>
-                </tr>
-              {% else %}
-                <tr>
-                  <th scope="row"> INCONNU </th>
-                  <td>0</td>
-                </tr>
-              {% endif %}
-              {% if  duel.Inscrit2 %}
-                <tr>
-                  <th scope="row">{{ duel.Inscrit2.nom}}</th>
-                  <td>{{ duel.ScoreInscrit2 }}</td>
-                </tr>
-              {% else %}
-                <tr>
-                  <th scope="row"> INCONNU </th>
-                  <td>0</td>
-                </tr>
-              {% endif %}
-            </table>
-        </div>
+
+      <table class='match{{loop.index}} table table-dark table-bordered'>
+        {% if  duel.Inscrit1 %}
+          <tr class='inscrit inscrit{{duel.inscrit1.nom}} {{duel.inscrit1.nom}}'>
+            <th scope='row'>{{ duel.inscrit1.nom}}</th>
+            <td>{{ duel.ScoreInscrit1 }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <th scope='row'> INCONNU </th>
+            <td>0</td>
+          </tr>
+        {% endif %}
+        {% if  duel.Inscrit2 %}
+          <tr class='inscrit{{duel.inscrit2.nom}} {{duel.inscrit2.nom}}'>
+            <th scope='row'>{{ duel.Inscrit2.nom}}</th>
+            <td>{{ duel.ScoreInscrit2 }}</td>
+          </tr>
+
+        {% else %}
+          <tr>
+            <th scope='row'> INCONNU </th>
+            <td>0</td>
+          </tr>
+        {% endif %}
+      </table>
+
+      <script>
+        $( ".tour" + {{duel.tour}} ).append( $(".match" + {{loop.index}}) );
+
+      </script>
+
+
+
+
+
+
+    {% endfor %}
+
+    {% for inscrit in inscrits %}
+    <script>
+    $(function() {
+        $('.inscrit' + {{inscrit.nom}} ).hover(function() {
+        $('.inscrit' + {{inscrit.nom}} ).css('background-color', 'yellow');
+      }, function() {
+        // on mouseout, reset the background colour
+        $('.inscrit' + {{inscrit.nom}} ).css('background-color', '');
+      });
+    });
+    </script>
+
+
 
     {% endfor %}
   {% endif %}
-  </div >
-</div>
-
-
-
 
 {% endblock %}
