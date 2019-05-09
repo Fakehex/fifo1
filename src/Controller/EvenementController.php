@@ -331,4 +331,17 @@ class EvenementController extends AbstractController
             'inscrits' => $inscrits,
         ]);
       }*/
+
+    /**
+     * @Route("/initialiserBracketDouble/{id}", name="initialiserBracketDouble", methods={"GET"})
+     */
+    public function constructBracketDouble(Evenement $evenement)
+    {
+        $bracketDouble = new BracketDirect();
+        $bracketDouble->setTourActuel(1);
+        $inscrits = $evenement->getInscrits();
+        $nbInscrits = sizeof($inscrits);
+        $duels = $bracketDouble->getDuels();
+
+    }
 }
