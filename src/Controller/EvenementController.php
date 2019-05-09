@@ -9,7 +9,9 @@ use App\Entity\BracketDirect;
 use App\Entity\BracketDouble;
 use App\Form\EvenementType;
 use App\Form\TournoiType;
+use App\Form\DuelType;
 use App\Repository\EvenementRepository;
+use App\Repository\DuelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -130,13 +132,14 @@ class EvenementController extends AbstractController
     public function affiche_bracket(Evenement $evenement){
        $bracketDirect = $evenement->getBracket();
        $duels = $bracketDirect->getDuels();
+       $inscrits = $evenement->getInscrits();
        $nbTour = 0;
        foreach ($duels as $duel) {
          if($duel->getTour() > $nbTour){
            $nbTour = $duel->getTour();
          }
        }
-      $inscrits = $evenement->getInscrits();
+
       return $this->render('bracket.html.twig',[
         'evenement' => $evenement,
         'inscrits' => $inscrits,
@@ -144,16 +147,50 @@ class EvenementController extends AbstractController
       ]);
     }
     /**
-     * @Route("/update_duels/{id}", name="update_duels", methods={"GET, POST"})
+     * @Route("/update_duels/{id}", name="update_duels", methods={"GET","POST"})
      */
-    public function updateDuels(Evenement $evenement, Request $request){
-      $data = $request->request->get('form');
+    public function updateDuels(Evenement $evenement, Request $request, DuelRepository $DuelRepository){
+      $bracketDirect = $evenement->getBracket();
+      $duels = $bracketDirect->getDuels();
+      $entityManager = $this->getDoctrine()->getManager();
+
+      $data = $request->request->all();
+    /*  if($data['idDuel']){
+        $duel = $duelRepository->findOneBy(['id'=>$data['idDuel']]);
+      }*/
+      if ($request->isMethod('POST')) {
+        var_dump($data);
+      }
+
+      $forms; //envoyé les forms et tester leurs affichage !
+      foreach($duels as $i=>$duel){
+        $form = $this->createForm(DuelType::class, $duel);
+        $form->handleRequest($request);
+        $forms[$i] = $form;
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($duel);
+
+
+        }
+      }
+      $entityManager->flush();
+
+
+
       $inscrits = $evenement->getInscrits();
-      return $this->render('/evenement/updateDuels.html.twig',[
-        'evenement' => $evenement,
-        'inscrits' => $inscrits,
-        'nbTour' => $nbTour
-      ]);
+      $nbTour = 0;
+      foreach ($duels as $duel) {
+        if($duel->getTour() > $nbTour){
+          $nbTour = $duel->getTour();
+        }
+      }
+
+     return $this->render('evenement/updateDuels.html.twig',[
+       'evenement' => $evenement,
+       'inscrits' => $inscrits,
+       'nbTour' => $nbTour
+     ]);
     }
     /**
      * @Route("/initialiserBracketDirect/{id}", name="initialiserBracketDirect", methods={"GET"})
