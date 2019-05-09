@@ -106,6 +106,16 @@ class Bracket
         return $this;
     }
 
+    public function getDuelsduTour(int $tour): int {
+        $i = 0;
+
+        foreach ($this->duels as $duel) {
+            $i++;
+        }
+
+        return $i;
+    }
+
     
 
 

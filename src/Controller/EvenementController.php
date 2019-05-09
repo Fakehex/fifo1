@@ -6,6 +6,7 @@ use App\Entity\Evenement;
 use App\Entity\Tournoi;
 use App\Entity\Duel;
 use App\Entity\BracketDirect;
+use App\Entity\BracketDouble;
 use App\Form\EvenementType;
 use App\Form\TournoiType;
 use App\Repository\EvenementRepository;
@@ -337,11 +338,109 @@ class EvenementController extends AbstractController
      */
     public function constructBracketDouble(Evenement $evenement)
     {
+        //Le winner bracket est identique au bracket simple jusqu'a la finale
         $bracketDouble = new BracketDouble();
         $bracketDouble->setTourActuel(1);
         $inscrits = $evenement->getInscrits();
         $nbInscrits = sizeof($inscrits);
-        $duels = $bracketDouble->getDuels();
+        $entityManager = $this->getDoctrine()->getManager();
+        $numTour = 1;
+        // Y c'est la puissance de 2 inferieur (au nombre d'inscrits)
+        //et X est le nombre de participants supplementaire pour correspondre a notre nombre d'inscrits
+        $y = 2;
+        while ($y < ($nbInscrits / 2)) {
+            $y = $y * 2;
+        }
+        $x = $nbInscrits - $y;
+        /* Le looser bracket revient a creer un tournoi pour un nombre de participants égal au nombre de matchs joués au T1 et T2 du winner bracket
+        La priorité au T1 du looser bracket est ceux qui n'ont pas joués d ematchs au T1 du winner bracket
+        x matchs au T1 du looser bracket également
+        */
+        $n = 0; // N est le numero de du prochain joueur a inscrire
+
+        // LE PREMIER TOUR -> INITIALISATION
+        for($i=0 ; $i < $x ; ++$i){
+            $duel = new Duel();
+            $duel->setInscrit1($inscrits[$n++]);
+            $duel->setInscrit2($inscrits[$n++]);
+            $duel->setTour($numTour);
+            $duel->initScore();
+
+            $entityManager->persist($duel);
+            $bracketDouble->addDuel($duel);
+        }
+
+        $numTour++;
+        // LE TOUR NUMERO 2 -> INITIALISATION
+        $tour2;
+        for($i=0 ; $i < $y/2 ; $i++){
+            $duel = new Duel();
+            $duel->setTour($numTour);
+            $duel->initScore();
+
+            $tour2[$i]= $duel;
+        }
+        //Remplir le tour 2
+        $secondeBoucle = false;
+        while($n < $nbInscrits) {
+            $i=0;
+            while(($n < $nbInscrits) && ($i < $y/2)){
+                $duel = $tour2[$i];
+                if($secondeBoucle){
+                    $duel->setInscrit2($inscrits[$n++]);
+                }else{
+                    $duel->setInscrit1($inscrits[$n++]);
+                }
+                $tour2[$i]= $duel;
+                $i++;
+            }
+            $secondeBoucle = true;
+        }
+        //ajout des duels tour2 dans le bracket
+        foreach($tour2 as $duel){
+            $entityManager->persist($duel);
+            $bracketDouble->addDuel($duel);
+        }
+        //generer tout les autres tours :
+        $y=$y/2;
+        while($y >= 2){
+            $y /= 2;
+            $numTour++;
+            for($i = 0; $i < $y; ++$i){
+                $duel = new Duel();
+                $duel->setTour($numTour);
+                $duel->initScore();
+                $entityManager->persist($duel);
+                $bracketDouble->addDuel($duel);
+            }
+        }
+
+        //Gestion bracket perdant
+
+        //T1 Loser Bracket
+
+
+
+
+
+
+
+
+
+
+        $evenement->setBracket($bracketDouble);
+        $entityManager->persist($evenement);
+        $entityManager->persist($bracketDouble);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'voila Y : '.$y);
+
+        return $this->render('evenement/show.html.twig', [
+            'evenement' => $evenement,
+            'inscrits' => $inscrits,
+        ]);
+
 
     }
+
 }
