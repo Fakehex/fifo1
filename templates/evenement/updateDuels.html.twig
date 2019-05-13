@@ -8,11 +8,10 @@
 			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 			  crossorigin="anonymous">
 </script>
+
+
+
     <h1>Mettre a jour les matchs</h1>
-    <form action="{{path('update_duels', {'id': evenement.id})}}">
-      test : <input type="number" name="scoreInscrit1" />
-      <input type="submit" value="Mettre a jour">
-    </form>
     <div class="container">
     	<div class="row">
     		{% for i in 1..nbTour %}
@@ -24,71 +23,26 @@
     </div>
 
     {% if evenement.isTournoi == true %}
-      {% for duel in evenement.bracket.duels %}
 
-        <table class='match{{loop.index}} table table-dark table-bordered'>
-          <form action="{{path('update_duels', {'id': evenement.id})}}">
-            {% if  duel.Inscrit1 %}
-              <tr class='inscrit inscrit{{duel.inscrit1.nom}} {{duel.inscrit1.nom}}'>
-                <th scope='row'>{{ duel.inscrit1.nom}}</th>
-                <td>{{ duel.ScoreInscrit1 }} <input type="number" name="scoreInscrit1" /> </td>
-              </tr>
-            {% else %}
-              <tr>
-                <th scope='row'> INCONNU </th>
-                <td>0</td>
-              </tr>
-            {% endif %}
-            {% if  duel.Inscrit2 %}
-              <tr class='inscrit{{duel.inscrit2.nom}}'>
-                <th scope='row'>{{ duel.Inscrit2.nom}}</th>
-                <td>{{ duel.ScoreInscrit2 }} <input type="number" name="scoreInscrit2" /></td>
-              </tr>
+		{{ include('evenement/_form_bracket.html.twig', {'button_label': 'Update'}) }}
 
-            {% else %}
-              <tr>
-                <th scope='row'> INCONNU </th>
-                <td>0</td>
-              </tr>
-            {% endif %}
-            <tr>
-              <td>
-                <input type="hidden" id="idDuel" name="idDuel" value="{{duel.id}}">
-                <input type="submit" value="Mettre a jour">
-              </td>
-            </tr>
-
-          </form>
-        </table>
-
-        <script>
-          $( ".tour" + {{duel.tour}} ).append( $(".match" + {{loop.index}}) );
-
-        </script>
-
-      {% endfor %}
-
-      {% for inscrit in inscrits %}
-      <script>
-      $(function() {
-          $('.inscrit' + "{{inscrit.nom}}" ).hover(function() {
-          $('.inscrit' + "{{inscrit.nom}}" ).css('background-color', 'pink');
-  				$('.inscrit' + "{{inscrit.nom}}" ).css('color', 'black');
-        }, function() {
-          // on mouseout, reset the background colour
-          $('.inscrit' + "{{inscrit.nom}}" ).css('background-color', '');
-  				$('.inscrit' + "{{inscrit.nom}}" ).css('color', '');
-        });
-      });
-      </script>
-
-
-
-      {% endfor %}
+		{% for inscrit in inscrits %}
+		<script>
+		$(function() {
+				$('.inscrit' + "{{inscrit.nom}}" ).hover(function() {
+				$('.inscrit' + "{{inscrit.nom}}" ).css('background-color', 'pink');
+				$('.inscrit' + "{{inscrit.nom}}" ).css('color', 'black');
+			}, function() {
+				// on mouseout, reset the background colour
+				$('.inscrit' + "{{inscrit.nom}}" ).css('background-color', '');
+				$('.inscrit' + "{{inscrit.nom}}" ).css('color', '');
+			});
+		});
+		</script>
+		{% endfor %}
 
     {% endif %}
 
     <a href="{{ path('evenement_index') }}">back to list</a>
 
-    {{ include('evenement/_delete_form.html.twig') }}
 {% endblock %}

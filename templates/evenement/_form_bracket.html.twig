@@ -1,0 +1,36 @@
+{{ form_start(form) }}
+  {% for duel in form.duels %}
+    <div class="container ">
+      <table class='match{{loop.index}} table table-dark table-bordered'>
+        {% if  duel.vars.value.inscrit1 %}
+        <tr class='inscrit{{duel.vars.value.inscrit1.nom}}'>
+          <th scope='row'>{{ form_row(duel.inscrit1) }}</th>
+          <td>{{ form_row(duel.scoreInscrit1) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <th scope='row'>{{ form_row(duel.inscrit1) }}</th>
+          <td>{{ form_row(duel.scoreInscrit1) }}</td>
+        </tr>
+        {% endif %}
+        {% if  duel.vars.value.inscrit2 %}
+          <tr class='inscrit{{duel.vars.value.inscrit2.nom}}'>
+            <th scope='row'>{{ form_row(duel.inscrit2) }}</th>
+            <td>{{ form_row(duel.scoreInscrit2) }}</td>
+          </tr>
+        {% else %}
+        <tr>
+          <th scope='row'>{{ form_row(duel.inscrit2) }}</th>
+          <td>{{ form_row(duel.scoreInscrit2) }}</td>
+        </tr>
+        {% endif %}
+
+      </table>
+    </div>
+      <script>
+        $( ".tour" + "{{duel.vars.value.tour}}" ).append( $(".match" + "{{loop.index}}") );
+
+      </script>
+  {% endfor %}
+  <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

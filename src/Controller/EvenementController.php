@@ -8,6 +8,7 @@ use App\Entity\Duel;
 use App\Entity\BracketDirect;
 use App\Entity\BracketDouble;
 use App\Form\EvenementType;
+use App\Form\BracketDirectType;
 use App\Form\TournoiType;
 use App\Form\DuelType;
 use App\Repository\EvenementRepository;
@@ -147,37 +148,23 @@ class EvenementController extends AbstractController
       ]);
     }
     /**
-     * @Route("/update_duels/{id}", name="update_duels", methods={"GET","POST"})
+     * @Route("/update_duels/{id}", name="update_duels_direct", methods={"GET","POST"})
      */
-    public function updateDuels(Evenement $evenement, Request $request, DuelRepository $DuelRepository){
+    public function updateDuelsDirect(BracketDirect $bracket, Request $request, DuelRepository $DuelRepository){
       $bracketDirect = $evenement->getBracket();
       $duels = $bracketDirect->getDuels();
       $entityManager = $this->getDoctrine()->getManager();
 
-      $data = $request->request->all();
-    /*  if($data['idDuel']){
-        $duel = $duelRepository->findOneBy(['id'=>$data['idDuel']]);
-      }*/
-      if ($request->isMethod('POST')) {
-        var_dump($data);
-      }
-
-      $forms; //envoyé les forms et tester leurs affichage !
-      foreach($duels as $i=>$duel){
-        $form = $this->createForm(DuelType::class, $duel);
-        $form->handleRequest($request);
-        $forms[$i] = $form;
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $entityManager->persist($duel);
 
 
+
+      $form = $this->createForm(BracketDirectType::class, $bracketDirect);
+      $form->handleRequest($request);
+      if ($form->isSubmitted() && $form->isValid()) {
+          $entityManager = $this->getDoctrine()->getManager();
+          $entityManager->persist($bracketDirect);
+          $entityManager->flush();
         }
-      }
-      $entityManager->flush();
-
-
-
       $inscrits = $evenement->getInscrits();
       $nbTour = 0;
       foreach ($duels as $duel) {
@@ -187,9 +174,10 @@ class EvenementController extends AbstractController
       }
 
      return $this->render('evenement/updateDuels.html.twig',[
-       'evenement' => $evenement,
+       'bracket' => $bracket,
        'inscrits' => $inscrits,
-       'nbTour' => $nbTour
+       'nbTour' => $nbTour,
+       'form' => $form->createView()
      ]);
     }
     /**

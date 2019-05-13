@@ -27,12 +27,12 @@ class Duel
     private $inscrit2;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $scoreInscrit1;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $scoreInscrit2;
 
@@ -87,7 +87,7 @@ class Duel
         return $this->scoreInscrit1;
     }
 
-    public function setScoreInscrit1(int $scoreInscrit1): self
+    public function setScoreInscrit1($scoreInscrit1): self
     {
         $this->scoreInscrit1 = $scoreInscrit1;
 
@@ -99,7 +99,7 @@ class Duel
         return $this->scoreInscrit2;
     }
 
-    public function setScoreInscrit2(int $scoreInscrit2): self
+    public function setScoreInscrit2($scoreInscrit2): self
     {
         $this->scoreInscrit2 = $scoreInscrit2;
 

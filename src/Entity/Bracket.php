@@ -39,7 +39,11 @@ class Bracket
      * @ORM\Column(type="integer")
      */
     private $tourActuel;
-
+    
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
     public function __construct()
     {
         $this->duels = new ArrayCollection();
@@ -116,7 +120,7 @@ class Bracket
         return $i;
     }
 
-    
+
 
 
 }

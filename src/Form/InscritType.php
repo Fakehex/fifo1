@@ -27,6 +27,7 @@ class InscritType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Inscrit::class,
+            'empty_data' => null,
         ]);
     }
 }

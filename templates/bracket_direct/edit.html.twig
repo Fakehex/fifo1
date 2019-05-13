@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit BracketDirect{% endblock %}
+
+{% block body %}
+    <h1>Edit BracketDirect</h1>
+
+    {{ include('evenement/_form_bracket.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('bracket_direct_index') }}">back to list</a>
+
+    {{ include('bracket_direct/_delete_form.html.twig') }}
+{% endblock %}
