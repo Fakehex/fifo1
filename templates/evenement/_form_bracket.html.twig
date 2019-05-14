@@ -1,4 +1,21 @@
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous">
+</script>
+
+
+
 {{ form_start(form) }}
+<div class="container">
+    <div class="row">
+      {% for i in 1..nbTour %}
+      <div class="tour{{i}} col-sm">
+        <p>Tour {{i}}</p>
+      </div>
+      {% endfor %}
+    </div>
+</div>
   {% for duel in form.duels %}
     <div class="container ">
       <table class='match{{loop.index}} table table-dark table-bordered'>
@@ -34,3 +51,20 @@
   {% endfor %}
   <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+
+
+	{% for inscrit in inscrits %}
+		<script>
+		$(function() {
+				$('.inscrit' + "{{inscrit.nom}}" ).hover(function() {
+				$('.inscrit' + "{{inscrit.nom}}" ).css('background-color', 'pink');
+				$('.inscrit' + "{{inscrit.nom}}" ).css('color', 'black');
+			}, function() {
+				// on mouseout, reset the background colour
+				$('.inscrit' + "{{inscrit.nom}}" ).css('background-color', '');
+				$('.inscrit' + "{{inscrit.nom}}" ).css('color', '');
+			});
+		});
+		</script>
+		{% endfor %}

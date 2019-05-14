@@ -71,7 +71,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Tu pensais être un utilisateur mais c etait MOI ! DIO!!!');
+            throw new CustomUserMessageAuthenticationException('Utilisateur non reconnu, veuillez verifier vos identifiants');
         }
 
         return $user;

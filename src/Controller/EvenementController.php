@@ -127,59 +127,8 @@ class EvenementController extends AbstractController
 
         return $this->redirectToRoute('evenement_index');
     }
-    /**
-     * @Route("/affiche_bracket/{id}", name="affiche_bracket", methods={"GET"})
-     */
-    public function affiche_bracket(Evenement $evenement){
-       $bracketDirect = $evenement->getBracket();
-       $duels = $bracketDirect->getDuels();
-       $inscrits = $evenement->getInscrits();
-       $nbTour = 0;
-       foreach ($duels as $duel) {
-         if($duel->getTour() > $nbTour){
-           $nbTour = $duel->getTour();
-         }
-       }
+    
 
-      return $this->render('bracket.html.twig',[
-        'evenement' => $evenement,
-        'inscrits' => $inscrits,
-        'nbTour' => $nbTour
-      ]);
-    }
-    /**
-     * @Route("/update_duels/{id}", name="update_duels_direct", methods={"GET","POST"})
-     */
-    public function updateDuelsDirect(BracketDirect $bracket, Request $request, DuelRepository $DuelRepository){
-      $bracketDirect = $evenement->getBracket();
-      $duels = $bracketDirect->getDuels();
-      $entityManager = $this->getDoctrine()->getManager();
-
-
-
-
-      $form = $this->createForm(BracketDirectType::class, $bracketDirect);
-      $form->handleRequest($request);
-      if ($form->isSubmitted() && $form->isValid()) {
-          $entityManager = $this->getDoctrine()->getManager();
-          $entityManager->persist($bracketDirect);
-          $entityManager->flush();
-        }
-      $inscrits = $evenement->getInscrits();
-      $nbTour = 0;
-      foreach ($duels as $duel) {
-        if($duel->getTour() > $nbTour){
-          $nbTour = $duel->getTour();
-        }
-      }
-
-     return $this->render('evenement/updateDuels.html.twig',[
-       'bracket' => $bracket,
-       'inscrits' => $inscrits,
-       'nbTour' => $nbTour,
-       'form' => $form->createView()
-     ]);
-    }
     /**
      * @Route("/initialiserBracketDirect/{id}", name="initialiserBracketDirect", methods={"GET"})
      */
@@ -284,16 +233,20 @@ class EvenementController extends AbstractController
        $tourPrecedent = $bracketDirect->getTourActuel();
        $bracketDirect->setTourActuel($tourPrecedent + 1);
 
-       $gagnants;
        $i = 0;
+       $gagnants = array();
        foreach ($duels as $duel) {
          if($duel->getTour() == $tourPrecedent){
-           $gagnants[$i++] = $duel->getGagnant();
+           $gagnant = $duel->getGagnant();
+           if($gagnant != null){
+             $gagnants[$i++] = $gagnant;
+
+           }
          }
        }
 
        $n = 0; //
-       $nbGagnants = sizeof($gagnants);
+       $nbGagnants = count($gagnants);
        foreach ($duels as $duel) {
          if($duel->getTour() == $tourPrecedent + 1 ){
            if($duel->getInscrit1() == null){
@@ -307,6 +260,7 @@ class EvenementController extends AbstractController
                    'inscrits' => $inscrits,
                ]);
              }
+           }
              if($duel->getInscrit2() == null){
                if($n < $nbGagnants){
                  $duel->setInscrit2($gagnants[$n++]);
@@ -321,7 +275,7 @@ class EvenementController extends AbstractController
              }
            }
          }
-       }
+
 
        $entityManager->persist($bracketDirect);
        $entityManager->flush();

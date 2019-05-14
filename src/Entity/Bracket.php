@@ -23,23 +23,23 @@ class Bracket
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="bracket")
      */
-    private $duels;
+    protected $duels;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Tournoi", mappedBy="bracket", cascade={"persist", "remove"})
      */
-    private $tournoi;
+    protected $tournoi;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $tourActuel;
-    
+    protected $tourActuel;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,7 +120,7 @@ class Bracket
         return $i;
     }
 
-
+    
 
 
 }

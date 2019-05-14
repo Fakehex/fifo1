@@ -125,8 +125,8 @@ class Duel
     }
 
     public function getGagnant(): ?Inscrit
-    {   if($this->inscrit2 == null ){
-          return $this->inscrit1;
+    {   if(($this->inscrit2 == null) || ($this->inscrit2 == null) || ($this->scoreInscrit1 == $this->scoreInscrit2) ){
+          return null;
         }
         if($this->scoreInscrit1 < $this->scoreInscrit2){
             return $this->inscrit2;

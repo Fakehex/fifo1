@@ -138,5 +138,25 @@ class PageEvenementController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/{id}/affiche_bracket", name="affiche_bracket", methods={"GET"})
+     */
+    public function affiche_bracket(Evenement $evenement){
+       $bracketDirect = $evenement->getBracket();
+       $duels = $bracketDirect->getDuels();
+       $inscrits = $evenement->getInscrits();
+       $nbTour = 0;
+       foreach ($duels as $duel) {
+         if($duel->getTour() > $nbTour){
+           $nbTour = $duel->getTour();
+         }
+       }
+
+      return $this->render('page_evenement/bracket.html.twig',[
+        'evenement' => $evenement,
+        'inscrits' => $inscrits,
+        'nbTour' => $nbTour
+      ]);
+    }
 
 }

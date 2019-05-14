@@ -41,21 +41,9 @@
             </tr>
             <tr>
                 <th>Mettre a jour les duels</th>
-                <td> <a href="{{ path('update_duels_direct', {'id': evenement.bracket.id}) }}">Mettre a jour les duels</a> </td>
+                <td> <a href="{{ path('bracket_direct_edit', {'id': evenement.bracket.id}) }}">Mettre a jour les duels</a> </td>
             </tr>
         </tbody>
-    </table>
-    <table>
-        {% if evenement.isTournoi == true %}
-          {% for duel in evenement.bracket.duels %}
-            <tr>{% if  duel.Inscrit1 %}
-                {{ duel.Inscrit1.nom}}
-                {% endif %} VS {% if  duel.Inscrit2 %}
-                    {{ duel.Inscrit2.nom}}
-                    {% endif %}
-            </tr>
-          {% endfor %}
-        {% endif %}
     </table>
 
     <a href="{{ path('evenement_index') }}">back to list</a>

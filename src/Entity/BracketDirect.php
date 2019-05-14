@@ -11,5 +11,13 @@ use App\Entity\Duel;
  */
 class BracketDirect extends Bracket
 {
-
+  public function nbTour(){
+    $nbTour = 0;
+    foreach ($this->duels as $duel) {
+      if($duel->getTour() > $nbTour){
+        $nbTour = $duel->getTour();
+      }
+    }
+    return $nbTour;
+  }
 }

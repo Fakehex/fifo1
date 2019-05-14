@@ -73,13 +73,15 @@ class BracketDirectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('bracket_direct_index', [
-                'id' => $bracketDirect->getId(),
+            return $this->redirectToRoute('evenement_show', [
+                'id' => $bracketDirect->getTournoi()->getId(),
             ]);
         }
-
+        $inscrits = $bracketDirect->getTournoi()->getInscrits();
         return $this->render('bracket_direct/edit.html.twig', [
             'bracket_direct' => $bracketDirect,
+            'nbTour' => $bracketDirect->nbTour(),
+            'inscrits' => $inscrits,
             'form' => $form->createView(),
         ]);
     }

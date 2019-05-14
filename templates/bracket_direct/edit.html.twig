@@ -7,7 +7,7 @@
 
     {{ include('evenement/_form_bracket.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('bracket_direct_index') }}">back to list</a>
+    <a href="{{ path('evenement_show', {'id': bracket_direct.tournoi.id }) }}">Retour</a>
 
     {{ include('bracket_direct/_delete_form.html.twig') }}
 {% endblock %}
