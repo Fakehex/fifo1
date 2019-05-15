@@ -31,29 +31,6 @@ class BracketDouble extends Bracket
         $this->duelsPerdants = new ArrayCollection();
     }
 
-    public function addPerdants(Duel $duel): self
-    {
-        if (!$this->duelsPerdants->contains($duel)) {
-            $this->duelsPerdants[] = $duel;
-            $duel->setBracket($this);
-        }
-
-        return $this;
-    }
-
-    public function removePerdants(Duel $duel): self
-    {
-        if ($this->duelsPerdants->contains($duel)) {
-            $this->duelsPerdants->removeElement($duel);
-            // set the owning side to null (unless already changed)
-            if ($duel->getBracket() === $this) {
-                $duel->setBracket(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Duel[]
      */

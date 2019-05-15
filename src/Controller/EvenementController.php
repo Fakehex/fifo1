@@ -369,10 +369,12 @@ class EvenementController extends AbstractController
             $bracketDouble->addDuel($duel);
         }
 
+        $y/=2;
+
         $numTour++;
         // LE TOUR NUMERO 2 -> INITIALISATION
         $tour2;
-        for($i=0 ; $i < $y/2 ; $i++){
+        for($i=0 ; $i < $y ; $i++){
             $duel = new Duel();
             $duel->setTour($numTour);
             $duel->initScore();
@@ -383,7 +385,7 @@ class EvenementController extends AbstractController
         $secondeBoucle = false;
         while($n < $nbInscrits) {
             $i=0;
-            while(($n < $nbInscrits) && ($i < $y/2)){
+            while(($n < $nbInscrits) && ($i < $y)){
                 $duel = $tour2[$i];
                 if($secondeBoucle){
                     $duel->setInscrit2($inscrits[$n++]);
@@ -400,31 +402,197 @@ class EvenementController extends AbstractController
             $entityManager->persist($duel);
             $bracketDouble->addDuel($duel);
         }
-        //generer tout les autres tours :
-        $y=$y/2;
-        while($y >= 2){
-            $y /= 2;
-            $numTour++;
-            for($i = 0; $i < $y; ++$i){
-                $duel = new Duel();
-                $duel->setTour($numTour);
-                $duel->initScore();
-                $entityManager->persist($duel);
-                $bracketDouble->addDuel($duel);
-            }
-        }
 
         //Gestion bracket perdant
 
         //T1 Loser Bracket
 
+        $numTourPerdant = 1;
+
+        $o = 2;
+        while($o < ($bracketDouble->getnbDuelsTour(1, $bracketDouble->getDuels())+ $bracketDouble->getnbDuelsTour(2, $bracketDouble->getDuels()))/2){
+            $o = $o*2;
+        }
+        $v = ($bracketDouble->getnbDuelsTour(1, $bracketDouble->getDuels())+ $bracketDouble->getnbDuelsTour(2, $bracketDouble->getDuels())) - $o;
+
+        // LE PREMIER TOUR DES PERDANTS -> INITIALISATION
+        for($i=0 ; $i < $v ; ++$i){
+            $duel = new Duel();
+            $duel->setTour($numTourPerdant);
+            $duel->initScore();
+
+            $entityManager->persist($duel);
+            $bracketDouble->addDuelsPerdant($duel);
+        }
+
+        $numTourPerdant++;
+        // LE TOUR NUMERO 2 DES PERDANTS-> INITIALISATION
+        $tour2P;
+        for($i=0 ; $i < $o/2 ; $i++){
+            $duel = new Duel();
+            $duel->setTour($numTourPerdant);
+            $duel->initScore();
+
+            $tour2P[$i]= $duel;
+        }
+        $secondeBoucle = false;
+        while($n < $nbInscrits) {
+            $i=0;
+            while(($n < $nbInscrits) && ($i < $o/2)){
+                $duel = $tour2P[$i];
+                if($secondeBoucle){
+                    $duel->setInscrit2($inscrits[$n++]);
+                }else{
+                    $duel->setInscrit1($inscrits[$n++]);
+                }
+                $tour2P[$i]= $duel;
+                $i++;
+            }
+            $secondeBoucle = true;
+        }
+        //ajout des duels tour2 des perdants dans le bracket
+        foreach($tour2P as $duel){
+            $entityManager->persist($duel);
+            $bracketDouble->addDuelsPerdant($duel);
+        }
 
 
+        /*Tous les autres tours
+        Regles:
+            On traite le Winner Bracket en premier pour générer le deuxieme
+            T1 et T2 sont deja générés pour chaque Bracket
+            Si nbMatch(Tour Actuel) = nbMatch(Tour Perdant Actuel) et nbMatch != 1: alors il y aura autant de matchs dans le tour perdant que de ce tour
+            Si nbMatch(Tour Actuel) < nbMatch(Tour Perdant Actuel): il y a match entre les joueurs du loser bracket puis on traite a nouveau
+            Si nbMatch(Tour Actuel) = nbMatch(Tour Perdant Actuel), nbMatch == 1 et nb Match(Tour Perdant Precedant) != 1: Finale des perdants
+            Si nbMatch(Tour Actuel) = nbMatch(Tour Perdant Actuel), nbMatch == 1 et nb Match(Tour Perdant Precedant) == 1: Finale des gagnants
+        La génération des 2 matchs supplémentaires ce fait dans TourSuivantDouble pour ajuster le nomrbe de matchs
+        numTourPerdant = 2
+        numTourActuel = 2
+
+*/
+        //generer tout les autres tours:
+
+        /*while($y >= 2){
+            $y /= 2;
+            $numTour++;
+            for($i = 0; $i < $y; ++$i){
+                if() {
+                    $duel = new Duel();
+                    $duel->setTour($numTour);
+                    $duel->initScore();
+                    $entityManager->persist($duel);
+                    $bracketDouble->addDuel($duel);
+
+                }*/
+        $finTournoi = false;
+
+        while($finTournoi == false){
+
+            var_dump($finTournoi);
+
+            //Si nbMatch(Tour Actuel) = nbMatch(Tour Perdant Actuel) et nbMatch != 1: alors il y aura autant de matchs dans le tour perdant que de ce tour
+            $nbDuelsDernierTourPerdant = $bracketDouble->getnbDuelsTour($numTourPerdant, $bracketDouble->getDuelsPerdants());
+
+            if(($y/2 == $nbDuelsDernierTourPerdant) && ($y/2 != 1) )
+            {
+                $y/=2;
+                $numTour++;
+                for($i = 0; $i < $y; ++$i){
+                    $duel = new Duel();
+                    $duel->setTour($numTour);
+                    $duel->initScore();
+                    $entityManager->persist($duel);
+                    $bracketDouble->addDuel($duel);
+                }
+
+                $numTourPerdant++;
+                for($i = 0; $i < $nbDuelsDernierTourPerdant; ++$i){
+                    $duel = new Duel();
+                    $duel->setTour($numTourPerdant);
+                    $duel->initScore();
+                    $entityManager->persist($duel);
+                    $bracketDouble->addDuelsPerdant($duel);
+
+                }
 
 
+            }else{
 
+                //Si nbMatch(Tour Actuel) = nbMatch(Tour Perdant Actuel), nbMatch == 1 et nb Match(Tour Perdant Precedant) != 1: Finale des perdants
+                var_dump($y);
+                if(($y == $nbDuelsDernierTourPerdant) && ($bracketDouble->getnbDuelsTour($numTourPerdant-1, $bracketDouble->getDuelsPerdants()) != 1) )
+                {
+                    //Finale des perdants
+                    $numTourPerdant++;
+                    $duel = new Duel();
+                    $duel->setTour($numTourPerdant);
+                    $duel->initScore();
+                    $entityManager->persist($duel);
+                    $bracketDouble->addDuelsPerdant($duel);
 
+                    //Finale des gagnants
+                    $numTour++;
+                    $duel = new Duel();
+                    $duel->setTour($numTour);
+                    $duel->initScore();
+                    $entityManager->persist($duel);
+                    $bracketDouble->addDuel($duel);
 
+                    //Dernier Match des perdants
+                    $numTourPerdant++;
+                    $duel = new Duel();
+                    $duel->setTour($numTourPerdant);
+                    $duel->initScore();
+                    $entityManager->persist($duel);
+                    $bracketDouble->addDuelsPerdant($duel);
+
+                    //Grande Finale
+                    $numTour++;
+                    $duel = new Duel();
+                    $duel->setTour($numTour);
+                    $duel->initScore();
+                    $entityManager->persist($duel);
+                    $bracketDouble->addDuel($duel);
+                    $finTournoi = true;
+                    $finTournoi = true;
+                }
+                else{
+                    //Si nbMatch(Tour Actuel) < nbMatch(Tour Perdant Actuel): il y a match entre les joueurs du loser bracket puis on traite a nouveau
+                    if($y < $nbDuelsDernierTourPerdant) {
+                        $numTourPerdant++;
+                        for ($i = 0; $i < ($bracketDouble->getnbDuelsTour($numTourPerdant - 1, $bracketDouble->getDuelsPerdants()) / 2); ++$i) {
+                            $duel = new Duel();
+                            $duel->setTour($numTourPerdant);
+                            $duel->initScore();
+                            $entityManager->persist($duel);
+                            $bracketDouble->addDuelsPerdant($duel);
+                        }
+                    }else{
+                        $y/=2;
+                        $numTour++;
+                        for($i = 0; $i < $y; ++$i){
+                            $duel = new Duel();
+                            $duel->setTour($numTour);
+                            $duel->initScore();
+                            $entityManager->persist($duel);
+                            $bracketDouble->addDuel($duel);
+                        }
+
+                        $numTourPerdant++;
+                        for($i = 0; $i < $nbDuelsDernierTourPerdant; ++$i){
+                            $duel = new Duel();
+                            $duel->setTour($numTourPerdant);
+                            $duel->initScore();
+                            $entityManager->persist($duel);
+                            $bracketDouble->addDuelsPerdant($duel);
+
+                            $y/=2;
+                        }
+                    }
+                }
+            }
+
+        }
 
 
         $evenement->setBracket($bracketDouble);

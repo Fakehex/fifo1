@@ -110,11 +110,13 @@ class Bracket
         return $this;
     }
 
-    public function getDuelsduTour(int $tour): int {
+    public function getnbDuelsTour(int $turn, $duels): int {
+
         $i = 0;
 
-        foreach ($this->duels as $duel) {
-            $i++;
+        foreach ($duels as $duel) {
+            if ($duel->getTour() == $turn)
+                $i++;
         }
 
         return $i;
