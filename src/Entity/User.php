@@ -335,9 +335,12 @@ class User implements UserInterface
     }
     public function estInscrit($evenement){
       foreach ($this->getJoueurs() as $joueur) {
-        if($joueur->getEvenement()->getId() == $evenement->getId()){
-          return true;
+        if($joueur->getEvenement() != null ){
+          if($joueur->getEvenement()->getId() == $evenement->getId()){
+            return true;
+          }
         }
+
       }
       return false;
     }

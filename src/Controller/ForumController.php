@@ -22,9 +22,11 @@ class ForumController extends AbstractController {
   /**
    * @Route("/", name="forum")
    */
-  public function index(CategorieForumRepository $CategorieForumRepository){
+  public function index(CategorieForumRepository $CategorieForumRepository, TopicRepository $TopicRepository){
+
     return $this->render('forum/index.html.twig', [
         'categories' => $CategorieForumRepository->findAll(),
+        'topics' => $TopicRepository->findAll(),
     ]);
   }
   /**
@@ -55,6 +57,8 @@ class ForumController extends AbstractController {
       if ($form->isSubmitted() && $form->isValid()) {
           $entityManager = $this->getDoctrine()->getManager();
           $entityManager->persist($commentaire);
+          $topic->addNbCommentaires();
+          $entityManager->persist($topic);
           $entityManager->flush();
       }
     }else{
@@ -85,6 +89,7 @@ class ForumController extends AbstractController {
         $topic = new Topic();
         $topic->setDate(new \DateTime());
         $topic->setUser($user);
+        $topic->setNbCommentaires(0);
         $topic->setCategorieForum($categorie);
         $form = $this->createForm(TopicUserType::class, $topic);
         $form->handleRequest($request);

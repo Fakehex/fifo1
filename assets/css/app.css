@@ -2026,6 +2026,14 @@ a.btn.blue,
 	}
 }
 
+.table a
+{
+    display:block;
+    text-decoration:none;
+}
+.clickable-row{
+	cursor: pointer;
+}
 
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~jquery-bracket/dist/jquery.bracket.min.css";

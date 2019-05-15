@@ -139,7 +139,7 @@ class PageEvenementController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/affiche_bracket", name="affiche_bracket", methods={"GET"})
+     * @Route("/affiche_bracket/{id}", name="affiche_bracket", methods={"GET"})
      */
     public function affiche_bracket(Evenement $evenement){
        $bracketDirect = $evenement->getBracket();

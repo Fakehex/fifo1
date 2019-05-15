@@ -21,7 +21,6 @@
 </div>
 
 
-
   {% if evenement.isTournoi == true %}
     {% for duel in evenement.bracket.duels %}
 
@@ -67,7 +66,7 @@
     <script>
     $(function() {
         $('.inscrit' + "{{inscrit.nom}}" ).hover(function() {
-        $('.inscrit' + "{{inscrit.nom}}" ).css('background-color', 'pink');
+        $('.inscrit' + "{{inscrit.nom}}" ).css('background-color', 'green');
 				$('.inscrit' + "{{inscrit.nom}}" ).css('color', 'black');
       }, function() {
         // on mouseout, reset the background colour

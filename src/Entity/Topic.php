@@ -57,6 +57,11 @@ class Topic
      */
     private $date;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $nbCommentaires;
+
     public function getSlug()
     {
       return $this->slug;
@@ -164,6 +169,24 @@ class Topic
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getNbCommentaires(): ?int
+    {
+        return $this->nbCommentaires;
+    }
+
+    public function setNbCommentaires(int $nbCommentaires): self
+    {
+        $this->nbCommentaires = $nbCommentaires;
+
+        return $this;
+    }
+    public function addNbCommentaires(): self
+    {
+        $this->nbCommentaires = $this->nbCommentaires+1;
 
         return $this;
     }

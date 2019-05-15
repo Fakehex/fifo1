@@ -50,6 +50,9 @@
               {% else %}
                 <th>Vous devez vous connecter pour vous inscrire</th>
               {% endif %}
+              {% if evenement.isTournoi %}
+                <a href="{{ path('affiche_bracket', {'id': evenement.id}) }}">Afficher le Bracket</a>
+              {% endif %}
             </tr>
         </tbody>
 
