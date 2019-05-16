@@ -12,7 +12,7 @@ use App\Entity\Commentaire;
 use App\Entity\Topic;
 use App\Form\TopicUserType;
 use App\Form\CommentaireUserType;
-
+use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
@@ -22,11 +22,27 @@ class ForumController extends AbstractController {
   /**
    * @Route("/", name="forum")
    */
-  public function index(CategorieForumRepository $CategorieForumRepository, TopicRepository $TopicRepository){
-
+  public function index(CategorieForumRepository $CategorieForumRepository, TopicRepository $TopicRepository, Request $request, PaginatorInterface $paginator){
+    $categories = $CategorieForumRepository->findAll();
+    $donnees = array();
+    $i = 0;
+    foreach($categories as $categorie){
+      $topics = $TopicRepository->findBy(['categorieForum' => $categorie]);
+      // Paginate the results of the query
+      $topicsPaginate = $paginator->paginate(
+          // Doctrine Query, not results
+          $topics,
+          // Define the page parameter
+          $request->query->getInt('page', 1),
+          // Items per page
+          5
+      );
+      $donnees[++$i] =  array(0 =>$categorie, 1 =>$topics);
+    }
     return $this->render('forum/index.html.twig', [
-        'categories' => $CategorieForumRepository->findAll(),
-        'topics' => $TopicRepository->findAll(),
+        'donnees' => $donnees,
+      //  'categories' => $CategorieForumRepository->findAll(),
+      //'topics' => $TopicRepository->findAll(),
     ]);
   }
   /**
@@ -35,6 +51,7 @@ class ForumController extends AbstractController {
   public function topics(CategorieForumRepository $CategorieForumRepository, TopicRepository $TopicRepository, $slugCategorie){
     $categorie = $CategorieForumRepository->findOneBy(['slug'=>$slugCategorie]);
     $topics = $TopicRepository->findBy(['categorieForum' => $categorie]);
+
     return $this->render('forum/topics.html.twig', [
         'topics' => $topics,
         'slugCategorie'=>$slugCategorie,
