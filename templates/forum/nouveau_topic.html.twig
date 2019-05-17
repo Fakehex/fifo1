@@ -3,8 +3,11 @@
 {% block title %}New Topic{% endblock %}
 
 {% block body %}
-    <h1>Crée un nouveau Topic dans {{categorie.titre}}</h1>
-
-    {{ include('forum/_formTopic.html.twig') }}
+    <div class="container">
+      <div>
+        <h1>Nouveau topic dans {{categorie.titre}}</h1>
+      </div>
+      {{ include('forum/_formTopic.html.twig') }}
+    </div>
 
 {% endblock %}

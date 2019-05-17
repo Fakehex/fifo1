@@ -13,7 +13,7 @@ class CommentaireUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text', TextareaType::class, array('attr' => array('class' => 'ckeditor')))
+            ->add('text', TextareaType::class, array('attr' => array('class' => 'ckeditor', 'placeholder' => 'Reponse...'), 'label'=>false))
         ;
     }
 

@@ -1,11 +1,13 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
     <script src="{{ asset('/javascript/ckeditor/adapters/jquery.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/javascript/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
-<script type="text/javascript">
+    <script src="{{ asset('/javascript/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
     $(function() {
         $('textarea.ckeditor').ckeditor();
     });
 </script>
-    <button class="btn">{{ button_label|default('Save') }}</button>
+  <div class="container">
+    <button class="btn btnSecondary btn-dark m-2">{{ button_label|default('Crée le topic') }}</button>
+  </div>
 {{ form_end(form) }}

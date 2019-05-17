@@ -6,11 +6,13 @@
   {{topic.titre}}
   <p>Publié le {{ topic.date|date("F jS \\a\\t g:ia") }}</p>
   <div class="container">
-    {{topic.text | raw }}
+    <div class="border m-5">
+      {{topic.text | raw }}
+    </div>
   </div>
-  <div class="container">
 
 
+<div class="container m-5">
     {% for commentaire in topic.commentaires %}
       <div class="container">
         {{ commentaire.user.username }}
@@ -29,6 +31,6 @@
       Veuillez vous connecter pour pouvoir commenter !
     </div>
     {% endif %}
-  </div>
+</div>
 
 {% endblock %}

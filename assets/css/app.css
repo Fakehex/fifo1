@@ -864,9 +864,20 @@ h1 {
 
 a.btn,
 .btn {
-	color: #7d8797;
+	color: black;
 	border-radius: 4px;
 	background: #fff;
+	font-size: 16px;
+	height: 46px;
+	line-height: 46px;
+	display: inline-block;
+	padding: 0 21px;
+	border: none;
+}
+.btnSecondary{
+	color: black;
+	border-radius: 4px;
+	background: #626872;
 	font-size: 16px;
 	height: 46px;
 	line-height: 46px;
