@@ -74,5 +74,10 @@ class BracketDouble extends Bracket
         return $this;
     }
 
+    public function getType(): ?string
+    {
+        return "double";
+    }
+
 
 }

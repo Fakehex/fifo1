@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BracketDouble index{% endblock %}
+
+{% block body %}
+    <h1>BracketDouble index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>TourActuel</th>
+                <th>TourPerdant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bracket_double in bracket_doubles %}
+            <tr>
+                <td>{{ bracket_double.id }}</td>
+                <td>{{ bracket_double.tourActuel }}</td>
+                <td>{{ bracket_double.tourPerdant }}</td>
+                <td>
+                    <a href="{{ path('bracket_double_show', {'id': bracket_double.id}) }}">show</a>
+                    <a href="{{ path('bracket_double_edit', {'id': bracket_double.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('bracket_double_new') }}">Create new</a>
+{% endblock %}

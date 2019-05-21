@@ -20,4 +20,9 @@ class BracketDirect extends Bracket
     }
     return $nbTour;
   }
+
+  public function getType(): ?string
+  {
+      return "direct";
+  }
 }

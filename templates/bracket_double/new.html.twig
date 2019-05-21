@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New BracketDouble{% endblock %}
+
+{% block body %}
+    <h1>Create new BracketDouble</h1>
+
+    {{ include('bracket_double/_form.html.twig') }}
+
+    <a href="{{ path('bracket_double_index') }}">back to list</a>
+{% endblock %}
