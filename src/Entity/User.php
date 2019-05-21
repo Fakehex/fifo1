@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 
 
@@ -54,6 +55,16 @@ class User implements UserInterface
      * @Assert\Email()
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\File(
+     *     maxSize = "8M",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     mimeTypesMessage = "Veuillez inserer un jpg ou png ne depassant pas 1 mo"
+     * )
+     */
+    protected $picture;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Commentaire", mappedBy="user")
@@ -379,5 +390,14 @@ class User implements UserInterface
         $this->statut = $statut;
 
         return $this;
+    }
+    public function setPicture($file)
+    {
+      $this->picture = $file;
+    }
+
+    public function getPicture()
+    {
+      return $this->picture;
     }
 }

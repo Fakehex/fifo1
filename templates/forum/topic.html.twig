@@ -3,21 +3,45 @@
 {% block title %}{{ topic.titre }}{% endblock %}
 
 {% block body %}
-  {{topic.titre}}
+<div class="container">
+  <h2>{{topic.titre}}</h2>
   <p>Publié le {{ topic.date|date("F jS \\a\\t g:ia") }}</p>
   <div class="container">
-    <div class="border m-5">
+    <div class="contenuCom m-5">
       {{topic.text | raw }}
     </div>
   </div>
 
 
 <div class="container m-5">
+
     {% for commentaire in topic.commentaires %}
-      <div class="container">
-        {{ commentaire.user.username }}
-        {{ commentaire.publishedAt|date("F jS \\a\\t g:ia")}}
-        {{ commentaire.text | raw }}
+      <div class="container mb-3">
+        <div class="row">
+          <div class="col-sm-6 mr-1 bondeauCom">
+            {{ commentaire.user.username }}
+
+          </div>
+          <div class="col-sm-3 bondeauCom">
+            {{ commentaire.publishedAt|date("F jS \\a\\t g:ia")}}
+          </div>
+          <div class="col-sm-2"></div>
+          <div class="col-sm-1">
+            {% if commentaire.user.picture %}
+              <img src="{{ asset('uploads/archives/' ~ commentaire.user.picture) }}" width="80" height="80">
+            {% else %}
+              <img src="{{ asset('uploads/profilePicture/defaultPicture.png') }}" width="80" height="80">
+            {% endif %}
+          </div>
+
+        {% autoescape %}
+
+          <div class="col-sm-8 ml-1 contenuCom">
+            {{ commentaire.text | raw }}
+          </div>
+          <div class="col-sm-3"></div>
+        {% endautoescape %}
+        </div>
       </div>
     {% else %}
       <div class="container">
@@ -31,6 +55,8 @@
       Veuillez vous connecter pour pouvoir commenter !
     </div>
     {% endif %}
+</div>
+
 </div>
 
 {% endblock %}

@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class UserType extends AbstractType
 {
@@ -24,6 +26,7 @@ class UserType extends AbstractType
                 'second_options' => array('label' => 'Confirmer mot de passe'),
                 ))
             ->add('email',EmailType::class)
+            ->add('picture',FileType::class, ['label' => 'Image de profil (PNG, JPG, JPEG < 1 mo)', 'data_class' => null])
             ->add('submit',SubmitType::class,['label' =>'Inscription','attr'=>['class'=>'btn-primary btn-block']])
         ;
     }

@@ -2045,6 +2045,12 @@ a.btn.blue,
 .clickable-row{
 	cursor: pointer;
 }
+.bondeauCom{
+	border : solid;
+}
+.contenuCom{
+	border : solid;
+}
 
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~jquery-bracket/dist/jquery.bracket.min.css";

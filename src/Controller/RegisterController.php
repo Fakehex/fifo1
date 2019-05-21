@@ -9,22 +9,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use App\Service\FileUploader;
 
 class RegisterController extends Controller
 {
     /**
      * @Route("/register", name="app_register")
      */
-
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder){
+    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader){
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
-
-
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $user->getPicture();
+            $fileName = $fileUploader->upload($file);
+
+            $user->setPicture($fileName);
+
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
