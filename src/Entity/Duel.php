@@ -136,6 +136,18 @@ class Duel
         }
     }
 
+    public function getPerdant(): ?Inscrit
+    {   if(($this->inscrit2 == null) || ($this->inscrit2 == null) || ($this->scoreInscrit1 == $this->scoreInscrit2) ){
+        return null;
+    }
+        if($this->scoreInscrit1 > $this->scoreInscrit2){
+            return $this->inscrit2;
+        }
+        else{
+            return $this->inscrit1;
+        }
+    }
+
     public function getBracket(): ?Bracket
     {
         return $this->bracket;

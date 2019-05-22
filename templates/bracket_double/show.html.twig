@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BracketDouble{% endblock %}
+
+{% block body %}
+    <h1>BracketDouble</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bracket_double.id }}</td>
+            </tr>
+            <tr>
+                <th>TourActuel</th>
+                <td>{{ bracket_double.tourActuel }}</td>
+            </tr>
+            <tr>
+                <th>TourPerdant</th>
+                <td>{{ bracket_double.tourPerdant }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('bracket_double_index') }}">back to list</a>
+
+    <a href="{{ path('bracket_double_edit', {'id': bracket_double.id}) }}">edit</a>
+
+    {{ include('bracket_double/_delete_form.html.twig') }}
+{% endblock %}

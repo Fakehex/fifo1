@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit BracketDouble{% endblock %}
+
+{% block body %}
+    <h1>Edit BracketDouble</h1>
+
+    {{ include('bracket_double/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('bracket_double_index') }}">back to list</a>
+
+    {{ include('bracket_double/_delete_form.html.twig') }}
+{% endblock %}
