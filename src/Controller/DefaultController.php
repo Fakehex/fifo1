@@ -7,19 +7,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Repository\EvenementRepository;
 
 class DefaultController extends AbstractController
 {
     /**
      * @Route("/", name="accueil")
      */
-    public function index(Request $request)
+    public function index(Request $request,EvenementRepository $evenementRepository )
     {
-        $session = $request->getSession()->get('co');
-        $session2 = $request->getSession()->get('username');
-
-        return $this->render('accueil/index.html.twig',['co' => $session, 'username' => $session2]);
+        $co = $request->getSession()->get('co');
+        $username = $request->getSession()->get('username');
+        return $this->render('accueil/index.html.twig',['co' => $co, 'username' => $username, 'evenements' => $evenementRepository->findAll()]);
 
     }
 

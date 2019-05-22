@@ -3,26 +3,30 @@
 {% block title %}Evenement index{% endblock %}
 
 {% block body %}
-    <h1>Evenements</h1>
+<div class="container">
+    <h2>Evenements</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for evenement in evenements %}
-            <tr>
-                <td><a href="{{ path('evenement', {'id': evenement.id}) }}">{{ evenement.titre }}</a></td>
-                <td>{{ evenement.date ? evenement.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	  {% for evenement in evenements %}
+  		<div class="row row-striped">
+  			<div class="col-2 text-right">
+  				<h1 class="display-4"><span class="badge badge-dark">{{ evenement.date|date('d') }}</span></h1>
+  				<h2>{{ _context['mois_' ~ evenement.date|date('m')] }}</h2>
+  			</div>
+  			<div class="col-10">
+  				<h3 class="text-uppercase"><strong>{{ evenement.titre }}</strong></h3>
+  				<ul class="list-inline">
+  				    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i>{{ evenement.date|localizeddate('none', 'none', 'fr', null, 'EEEE') }}</li>
+  					<li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i>{{evenement.date|date('H:i')}}</li>
+  					<li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i>{{evenement.salle}}</li>
+  				</ul>
+  				<p>{{evenement.texte}}</p>
+          <form method="get" action="{{ path('evenement', {'id': evenement.id}) }}">
+              <button type="submit" class="btn btn-success">Ca m'interesse !</button>
+          </form>
+  			</div>
+
+  		</div>
+
+    {% endfor %}
+</div>
 {% endblock %}

@@ -2051,6 +2051,26 @@ a.btn.blue,
 .contenuCom{
 	border : solid;
 }
+.row-striped:nth-of-type(odd){
+  background-color: grey;
+	color: white;
+  border-left: 4px #000000 solid;
+}
+.row-striped:nth-of-type(odd) h2{
+	color: white;
+}
 
+.row-striped:nth-of-type(even){
+  background-color: #ffffff;
+  border-left: 4px #efefef solid;
+}
+
+.row-striped {
+    padding: 15px 0;
+}
+.evenementIndex{
+	display:block;
+
+}
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~jquery-bracket/dist/jquery.bracket.min.css";

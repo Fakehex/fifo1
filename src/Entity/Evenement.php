@@ -61,6 +61,11 @@ class Evenement
      */
     private $isTournoi;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Salle;
+
     public function __construct()
     {
         $this->inscrits = new ArrayCollection();
@@ -170,6 +175,18 @@ class Evenement
     public function setIsTournoi(bool $isTournoi): self
     {
         $this->isTournoi = $isTournoi;
+
+        return $this;
+    }
+
+    public function getSalle(): ?string
+    {
+        return $this->Salle;
+    }
+
+    public function setSalle(string $Salle): self
+    {
+        $this->Salle = $Salle;
 
         return $this;
     }

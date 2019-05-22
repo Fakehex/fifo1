@@ -43,7 +43,7 @@
               {{ message }}
           </div>
   {% endfor %}
-  {% block body %}{% endblock %}
+  {% block body %}  {% endblock %}
   {% block footer %}
   <footer id="footer">
     <div class="container">
@@ -83,7 +83,7 @@
   <!-- / footer -->
   {% endblock %}
   {% block javascripts %}
-  {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
   {% endblock %}
 </body>
 </html>

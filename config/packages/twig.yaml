@@ -2,3 +2,17 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+
+    globals:
+      mois_01: Janvier
+      mois_02: Février
+      mois_03: Mars
+      mois_04: Avril
+      mois_05: Mai
+      mois_06: Juin
+      mois_07: Juillet
+      mois_08: Août
+      mois_09: Septembre
+      mois_10: Octobre
+      mois_11: Novembre
+      mois_12: Décembre

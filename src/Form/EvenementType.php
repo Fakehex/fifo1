@@ -16,6 +16,7 @@ class EvenementType extends AbstractType
             ->add('texte')
             ->add('NbInscrits')
             ->add('date')
+            ->add('salle')
             ->add('published_at')
             ->add('isTournoi')
         ;
