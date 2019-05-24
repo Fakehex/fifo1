@@ -106,6 +106,7 @@ class UserFixtures extends Fixture
         $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
         $manager->persist($product);
 
+
         $manager->flush();
     }
 }
