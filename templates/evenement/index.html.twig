@@ -24,14 +24,19 @@
                 <td>{{ evenement.texte }}</td>
                 <td>{{ evenement.date ? evenement.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ evenement.publishedAt ? evenement.publishedAt|date('Y-m-d H:i:s') : '' }}</td>
+                {%  if evenement.isTournoi == true  %}
+                <td>  <a href="{{ path('initialiserBracketDirect', {'id': evenement.id}) }}">Bracket Direct</a> </td>
+                <td>  <a href="{{ path('initialiserBracketDouble', {'id': evenement.id}) }}">Bracket Double</a> </td>
+                {% endif %}
                 <td>
+
                     <a href="{{ path('evenement_show', {'id': evenement.id}) }}">show</a>
                     <a href="{{ path('evenement_edit', {'id': evenement.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Pas d'event</td>
             </tr>
         {% endfor %}
         </tbody>

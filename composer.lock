@@ -1310,16 +1310,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.7",
+            "version": "2.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "709f21f92707308cdf8f9bcfa1af4cb26586521e"
+                "reference": "c26463ff9241f27907112fbcd0c86fa670cfef98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/709f21f92707308cdf8f9bcfa1af4cb26586521e",
-                "reference": "709f21f92707308cdf8f9bcfa1af4cb26586521e",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c26463ff9241f27907112fbcd0c86fa670cfef98",
+                "reference": "c26463ff9241f27907112fbcd0c86fa670cfef98",
                 "shasum": ""
             },
             "require": {
@@ -1363,7 +1363,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-12-04T22:38:24+00:00"
+            "time": "2019-05-16T22:02:54+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -3484,16 +3484,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.48.2",
+            "version": "3.48.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "d83ce5aba749fb54d91ab1ca9c64f13f0fbc045a"
+                "reference": "f521289aa2b1a0937e167c057d309ef7646604b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/d83ce5aba749fb54d91ab1ca9c64f13f0fbc045a",
-                "reference": "d83ce5aba749fb54d91ab1ca9c64f13f0fbc045a",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/f521289aa2b1a0937e167c057d309ef7646604b8",
+                "reference": "f521289aa2b1a0937e167c057d309ef7646604b8",
                 "shasum": ""
             },
             "require": {
@@ -3585,7 +3585,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2019-05-16T05:50:14+00:00"
+            "time": "2019-05-21T18:00:30+00:00"
         },
         {
             "name": "sonata-project/article-bundle",

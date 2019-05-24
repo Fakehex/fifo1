@@ -34,6 +34,78 @@ class UserFixtures extends Fixture
         $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
         $manager->persist($product);
 
+        $product = new User();
+        $product->setUsername('yes');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('no');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('si');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('da');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('nein');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('tak');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('nie');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('non');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('niet');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('hay');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('ie');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
+        $product = new User();
+        $product->setUsername('yebo');
+        $product->setEmail('oui@non.non');
+        $product->setPassword($this->passwordEncoder->encodePassword($product,'fifo'));
+        $manager->persist($product);
+
         $manager->flush();
     }
 }

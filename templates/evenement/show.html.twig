@@ -32,9 +32,7 @@
                 <td>{{ inscrits|length }}</td>
             </tr>
             <tr>
-                <th>Initialiser  </th>
-                <td>  <a href="{{ path('initialiserBracketDirect', {'id': evenement.id}) }}">Bracket Direct</a> </td>
-                <td>  <a href="{{ path('initialiserBracketDouble', {'id': evenement.id}) }}">Bracket Double</a> </td>
+
 
             </tr>
             <tr>
@@ -43,6 +41,7 @@
             </tr>
             <tr>
                 <th>Mettre a jour les duels</th>
+                
                 <td> <a href="{{ path('bracket_direct_edit', {'id': evenement.bracket.id}) }}">Mettre a jour les duels</a> </td>
             </tr>
         </tbody>

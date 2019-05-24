@@ -38,7 +38,7 @@ class CalendarListener
             // this create the events with your data (here booking data) to fill calendar
             $bookingEvent = new Event(
                 $evenement->getTitle(),
-                $evenement->getBeginAt(),
+                $evenement->getBeginAt()
               //  $evenement->getEndAt() // If the end date is null or not defined, a all day event is created.
             );
 

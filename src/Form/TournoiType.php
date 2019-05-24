@@ -6,6 +6,8 @@ use App\Entity\Tournoi;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Bracket;
 
 class TournoiType extends AbstractType
 {
@@ -16,6 +18,7 @@ class TournoiType extends AbstractType
             ->add('texte')
             ->add('NbInscrits')
             ->add('date')
+            ->add('salle')
             ->add('published_at')
         ;
     }
