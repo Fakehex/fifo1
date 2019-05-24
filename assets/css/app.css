@@ -786,12 +786,12 @@ h1.single{
 h1,
 h2 {
 	color: #7e8798;
-	font-size: 60px;
+	font-size: 50px;
 	font-family: 'BebasNeue';
 	line-height: 68px;
 	font-weight: 300;
 	text-align: center;
-	padding-bottom: 53px;
+	padding-bottom: 10px;
 }
 
 h1 {

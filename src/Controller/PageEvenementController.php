@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Knp\Component\Pager\PaginatorInterface;
 /**
  * @Route("/evenement")
  */
@@ -21,13 +21,37 @@ class PageEvenementController extends AbstractController
     /**
      * @Route("/", name="evenements", methods={"GET"})
      */
-    public function index(EvenementRepository $evenementRepository): Response
+    public function index(EvenementRepository $evenementRepository, Request $request, UserRepository $UserRepository, PaginatorInterface $paginator): Response
     {
-        return $this->render('page_evenement/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
-        ]);
-    }
+      $estConnecte = $request->getSession()->get('co');
+      $username = $request->getSession()->get('username');
+      $estInscrit = array();
+      $allEvenements = $evenementRepository->findAllSortedDate();
+      if($estConnecte){
+        $user = $UserRepository->findOneBy(['username' => $username]);
 
+        foreach($allEvenements as $evenement){
+            $estInscrit[$evenement->getId()] = $user->estInscrit($evenement);
+        }
+      }
+
+      // Paginate the results of the query
+        $evenements = $paginator->paginate(
+            // Doctrine Query, not results
+            $allEvenements,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
+
+        return $this->render('page_evenement/index.html.twig', [
+            'evenements' => $evenements,
+            'estConnecte'=> $estConnecte,
+            'estInscrit'=> $estInscrit,
+        ]);
+
+    }
     /**
      * @Route("/{id}", name="evenement", methods={"GET","POST"})
      */
@@ -81,7 +105,7 @@ class PageEvenementController extends AbstractController
             $entityManager->flush();
           }
             $this->addFlash('success', 'Votre equipe est mainteant inscrit !');
-          return $this->render('page_evenement/show.html.twig', [
+          return $this->render('page_evenement/index.html.twig', [
               'evenement' => $evenement,
               'inscrits' => $inscrits,
               'connecte' => $connecte,
@@ -90,12 +114,82 @@ class PageEvenementController extends AbstractController
           ]);
         }
       }
-        return $this->render('page_evenement/show.html.twig', [
+
+        return $this->render('page_evenement/inscription_equipe.html.twig', [
             'evenement' => $evenement,
             'inscrits' => $inscrits,
             'connecte' => $connecte,
             'estInscrit' => $estInscrit,
         ]);
+    }
+    /**
+     * @Route("/inscription_equipe/{id}", name="inscription_equipe", methods={"GET","POST"})
+     */
+    public function inscription_equipe(Evenement $evenement,Request $request, UserRepository $UserRepository): Response
+    {
+      $inscrits = $evenement->getInscrits();
+      $connecte = $request->getSession()->get('co');
+      $username = $request->getSession()->get('username');
+      $estInscrit = false;
+      if($connecte){
+        $user = $UserRepository->findOneBy(['username' => $username]);
+        $estInscrit = $user->estInscrit($evenement);
+        if($evenement->getNbInscrits()>1 && !$estInscrit){
+
+          $equipe = new Equipe();
+          $equipe->setEvenement($evenement);
+
+          $form = $this->createFormBuilder()
+            ->add('nomEquipe')
+            ->add('leader');
+          for($i = 1; $i < $evenement->getNbInscrits(); $i++){
+            $form->add('joueur'.$i);
+          }
+          $form = $form->getForm();
+
+          $form->handleRequest($request);
+          $entityManager = $this->getDoctrine()->getManager();
+
+          if ($form->isSubmitted() && $form->isValid()) {
+            // data is an array with "joueur1", "joueur2"..., and "leader" keys
+            $data = $form->getData();
+            $equipe->setNom($data['nomEquipe']);
+
+
+            $joueur = new Joueur();
+            $joueur->setNom($data['leader']);
+            $joueur->setUser($user);
+            $joueur->setEvenement($evenement);
+            $joueur->setEquipe($equipe);
+            $equipe->setLeader($joueur);
+
+            for($i = 1; $i < $evenement->getNbInscrits(); $i++){
+              $joueur = new Joueur();
+              $joueur->setNom($data['joueur'.$i]);
+              $joueur->setEvenement($evenement);
+              $entityManager->persist($joueur);
+              $equipe->addJoueur($joueur);
+
+            }
+            $entityManager->persist($equipe);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre equipe est mainteant inscrit !');
+            return $this->redirectToRoute('evenements');
+          }
+
+          return $this->render('page_evenement/inscription_equipe.html.twig', [
+              'form' => $form->createView(),
+              'evenement' => $evenement,
+              'inscrits' => $inscrits,
+              'connecte' => $connecte,
+              'estInscrit' => $estInscrit,
+          ]);
+        }
+      }
+
+        $this->addFlash('danger', 'Redirection : cette page vous est inaccessible');
+        return $this->redirectToRoute('evenements');
     }
     /**
      * @Route("/inscription/{id}", name="inscription", methods={"GET"})
