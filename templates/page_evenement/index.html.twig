@@ -2,31 +2,114 @@
 
 {% block title %}Evenement index{% endblock %}
 
-{% block body %}
-<div class="container">
-    <h2>Evenements</h2>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+{% endblock %}
 
+{% block body %}
+<div class="container mb-5">
+    <h2>Evenements</h2>
+  <div class="row">
+  <ul class="col-sm-8 float-sm-none">
 	  {% for evenement in evenements %}
-  		<div class="row row-striped">
-  			<div class="col-2 text-right">
+  		<li class="row row-striped" id="ancre{{evenement.id}}">
+  			<div class="col-3 text-right">
   				<h1 class="display-4"><span class="badge badge-dark">{{ evenement.date|date('d') }}</span></h1>
   				<h2>{{ _context['mois_' ~ evenement.date|date('m')] }}</h2>
   			</div>
-  			<div class="col-10">
+  			<div class="col-9">
   				<h3 class="text-uppercase"><strong>{{ evenement.titre }}</strong></h3>
   				<ul class="list-inline">
-  				    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i>{{ evenement.date|localizeddate('none', 'none', 'fr', null, 'EEEE') }}</li>
-  					<li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i>{{evenement.date|date('H:i')}}</li>
+  				    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i>{{ evenement.date|localizeddate('none', 'none', 'fr', null, 'EEEE d MMMM') }}</li>
+  					<li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i>à {{evenement.date|date('H:i')}}</li>
   					<li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i>{{evenement.salle}}</li>
   				</ul>
-  				<p>{{evenement.texte}}</p>
-          <form method="get" action="{{ path('evenement', {'id': evenement.id}) }}">
-              <button type="submit" class="btn btn-success">Ca m'interesse !</button>
-          </form>
-  			</div>
+          <div class="m-2">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseEvent{{loop.index}}" aria-expanded="false" aria-controls="collapseExample">
+              Details
+            </button>
+            {% if estConnecte %}
+              {% if estInscrit[evenement.id] %}
+                <p> Vous etes deja inscrit ! </p>
+                {% else %}
+                  {% if evenement.NbInscrits > 1 %}
 
-  		</div>
+                  <a class="btn btn-primary" href="{{ path('inscription_equipe', {'id': evenement.id}) }}">Inscrire mon équipe</a>
+
+                  {% else %}
+
+                      <a class="btn btn-primary" href="{{ path('inscription', {'id': evenement.id}) }}">s'inscrire</a>
+
+                  {% endif %}
+              {% endif %}
+            {% else %}
+              <p>Vous devez vous connecter pour vous inscrire</p>
+            {% endif %}
+            {% if evenement.isTournoi %}
+              <a  class="btn btn-primary"href="{{ path('affiche_bracket', {'id': evenement.id}) }}">Afficher le Bracket</a>
+            {% endif %}
+          </div>
+  			</div>
+        <div class="col-sm-12">
+          <div class="collapse" id="collapseEvent{{loop.index}}">
+            <div class="card card-body text-dark">
+              {{evenement.texte | raw}}
+            </div>
+          </div>
+        </div>
+  		</li>
 
     {% endfor %}
+    <div class="navigation">
+                {{ knp_pagination_render(evenements) }}
+    </div>
+  </ul>
+
+    <div class="float-sm-left col-sm-4">
+      {% include '@Calendar/calendar.html' %}
+    </div>
+  </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            var calendarEl = document.getElementById('calendar-holder');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                defaultView: 'dayGridMonth',
+                editable: true,
+                eventSources: [
+                    {
+                        url: "{{ path('fc_load_events') }}",
+                        method: "POST",
+                        extraParams: {
+                            filters: JSON.stringify({})
+                        },
+                        failure: () => {
+                            // alert("There was an error while fetching FullCalendar!");
+                        },
+                    },
+                ],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                },
+                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
+                timeZone: 'UTC',
+            });
+            calendar.render();
+        });
+    </script>
 {% endblock %}

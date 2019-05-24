@@ -6,15 +6,19 @@ use App\Entity\Evenement;
 use App\Repository\EvenementRepository;
 use CalendarBundle\Entity\Event;
 use CalendarBundle\Event\CalendarEvent;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CalendarListener
 {
     private $evenementRepository;
+    private $router;
 
     public function __construct(
-        EvenementRepository $evenementRepository
+        EvenementRepository $evenementRepository,
+        UrlGeneratorInterface $router
     ) {
         $this->evenementRepository = $evenementRepository;
+        $this->router = $router;
     }
 
     public function load(CalendarEvent $calendar): void
@@ -25,21 +29,22 @@ class CalendarListener
 
         // Modify the query to fit to your entity and needs
         // Change booking.beginAt by your start date property
-        $evenements = $this->evenementRepository
-            ->createQueryBuilder('evenement')
-            ->where('evenement.date BETWEEN :start and :end')
-            ->setParameter('start', $start->format('Y-m-d H:i:s'))
-            ->setParameter('end', $end->format('Y-m-d H:i:s'))
-            ->getQuery()
-            ->getResult()
+        $evenements = $this->evenementRepository->findall();
+          //  ->createQueryBuilder('evenement')
+          //  ->where('evenement.date')
+          //  ->setParameter('start', $start->format('Y-m-d H:i:s'))
+          //  ->setParameter('end', $end->format('Y-m-d H:i:s'))
+          //  ->getQuery()
+          //  ->getResult()
         ;
 
         foreach ($evenements as $evenement) {
             // this create the events with your data (here booking data) to fill calendar
+
             $bookingEvent = new Event(
-                $evenement->getTitle(),
-                $evenement->getBeginAt(),
-              //  $evenement->getEndAt() // If the end date is null or not defined, a all day event is created.
+                $evenement->getTitre(),
+                $evenement->getDate(),
+                null // If the end date is null or not defined, a all day event is created.
             );
 
             /*
@@ -53,7 +58,7 @@ class CalendarListener
                 'backgroundColor' => 'red',
                 'borderColor' => 'red',
             ]);
-            $bookingEvent->addOption('url', 'https://github.com');
+            $bookingEvent->addOption('url', $this->router->generate('evenements', ['_fragment' => 'ancre'.$evenement->getId()]));
 
             // finally, add the event to the CalendarEvent to fill the calendar
             $calendar->addEvent($bookingEvent);
