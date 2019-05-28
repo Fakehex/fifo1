@@ -2072,5 +2072,10 @@ a.btn.blue,
 	display:block;
 
 }
+.imgcarousel{
+	height: 250px;
+	width: auto;
+	display: block !important;
+}
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~jquery-bracket/dist/jquery.bracket.min.css";
