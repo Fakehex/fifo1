@@ -236,21 +236,42 @@ class PageEvenementController extends AbstractController
      * @Route("/affiche_bracket/{id}", name="affiche_bracket", methods={"GET"})
      */
     public function affiche_bracket(Evenement $evenement){
-       $bracketDirect = $evenement->getBracket();
-       $duels = $bracketDirect->getDuels();
+       $bracket = $evenement->getBracket();
+       $duels = $bracket->getDuels();
        $inscrits = $evenement->getInscrits();
+
+       if($bracket->getType() == "double"){
+            $duelsP = $bracket->getDuelsPerdants();
+       }
+
        $nbTour = 0;
+
        foreach ($duels as $duel) {
          if($duel->getTour() > $nbTour){
            $nbTour = $duel->getTour();
          }
        }
+       if($bracket->getType() == "double") {
+           $nbTourPerdant = 0;
+            foreach ($duelsP as $duelP) {
+                if ($duelP->getTour() > $nbTourPerdant) {
+                    $nbTourPerdant = $duelP->getTour();
+                }
+            }
+           return $this->render('page_evenement/bracket_double.html.twig',[
+               'evenement' => $evenement,
+               'inscrits' => $inscrits,
+               'nbTour' => $nbTour,
+               'nbTourLooser' => $nbTourPerdant,
+
+           ]);
+       }
 
       return $this->render('page_evenement/bracket.html.twig',[
         'evenement' => $evenement,
         'inscrits' => $inscrits,
-        'nbTour' => $nbTour
-      ]);
+        'nbTour' => $nbTour,
+          ]);
     }
 
 }
