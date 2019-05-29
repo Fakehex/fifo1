@@ -877,7 +877,7 @@ a.btn,
 .btnSecondary{
 	color: black;
 	border-radius: 4px;
-	background: #626872;
+	background: #bcbcbc;
 	font-size: 16px;
 	height: 46px;
 	line-height: 46px;
@@ -2077,5 +2077,8 @@ a.btn.blue,
 	width: auto;
 	display: block !important;
 }
+
+
+
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~jquery-bracket/dist/jquery.bracket.min.css";

@@ -29,7 +29,7 @@ class CalendarListener
 
         // Modify the query to fit to your entity and needs
         // Change booking.beginAt by your start date property
-        $evenements = $this->evenementRepository->findall();
+        $evenements = $this->evenementRepository->findAllSortedDate();
           //  ->createQueryBuilder('evenement')
           //  ->where('evenement.date')
           //  ->setParameter('start', $start->format('Y-m-d H:i:s'))
@@ -37,7 +37,7 @@ class CalendarListener
           //  ->getQuery()
           //  ->getResult()
         ;
-
+        $i = 0;
         foreach ($evenements as $evenement) {
             // this create the events with your data (here booking data) to fill calendar
 
@@ -58,7 +58,9 @@ class CalendarListener
                 'backgroundColor' => 'red',
                 'borderColor' => 'red',
             ]);
-            $bookingEvent->addOption('url', $this->router->generate('evenements', ['_fragment' => 'ancre'.$evenement->getId()]));
+            $page = (int) ($i++/5);
+            $page++;
+            $bookingEvent->addOption('url', $this->router->generate('evenements', ['page'=> $page,'_fragment' => 'ancre'.$evenement->getId()]));
 
             // finally, add the event to the CalendarEvent to fill the calendar
             $calendar->addEvent($bookingEvent);

@@ -3,22 +3,23 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+<div class="container mb-5">
+  <div class="row">
+  <div class="col-sm-6 border border-secondary">
     <div>
         <form method="post">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
-            <h1 class="h3 mb-3 font-weight-normal">Connectez-vous, s'il vous plaît</h1>
+            <h1 class="h3 mb-3 mt-2 font-weight-normal">Connectez-vous, s'il vous plaît</h1>
             <label for="inputUsername" class="sr-only">Username</label>
-            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control m-1" placeholder="Username" required autofocus>
             <label for="inputPassword" class="sr-only">Mot de Passe</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input type="password" name="password" id="inputPassword" class="form-control m-1" placeholder="Password" required>
 
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
-            <button class="btn-primary btn-block" type="submit">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button class="btn-primary btn-block" type="submit centered">
                 Connexion
             </button>
         </form>
@@ -26,14 +27,23 @@
     <div>
         <a  href="{{ path('app_forgotten_password') }}">Mot de passe Oublié</a>
     </div>
-
+  </div>
+  <div class="col-sm-6 border border-secondary">
     <div>
+        <h1 class="h3 mb-0 mt-2 font-weight-normal">Vous n'êtes pas inscrit ?</h1>
+        <p> Vous êtes un étudiant de l'université d'Orléans ? </br>
+          Inscrivez-vous et profitez du site mis a disposition par la fifo </br>
+          <em>L'ensemble des fonctionnalités liées aux cours sont affiliées a la faculté d'informatique d'Orléans</em>
+        </p>
         <form action="{{ path('app_register') }}">
           <button class="btn-primary btn-block" type="submit">
               Inscription
           </button>
         </form>
     </div>
+  </div>
+</div>
+  </div>
 
 
     {#

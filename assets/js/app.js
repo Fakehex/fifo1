@@ -7,6 +7,9 @@
 
 // any CSS you require will output into a single css file (app.css in this case)
 require('../css/app.css');
+require('../js/main.js');
+require('../js/plugin.js');
+
 
 const $ = require('jquery');
 
