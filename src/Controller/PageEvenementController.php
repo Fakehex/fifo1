@@ -237,27 +237,13 @@ class PageEvenementController extends AbstractController
      */
     public function affiche_bracket(Evenement $evenement){
        $bracket = $evenement->getBracket();
-       $duels = $bracket->getDuels();
        $inscrits = $evenement->getInscrits();
 
-       if($bracket->getType() == "double"){
-            $duelsP = $bracket->getDuelsPerdants();
-       }
+       $nbTour = $bracket->nbTour();
 
-       $nbTour = 0;
-
-       foreach ($duels as $duel) {
-         if($duel->getTour() > $nbTour){
-           $nbTour = $duel->getTour();
-         }
-       }
        if($bracket->getType() == "double") {
-           $nbTourPerdant = 0;
-            foreach ($duelsP as $duelP) {
-                if ($duelP->getTour() > $nbTourPerdant) {
-                    $nbTourPerdant = $duelP->getTour();
-                }
-            }
+            $nbTourPerdant = $bracket->nbTourPerdant();
+
            return $this->render('page_evenement/bracket_double.html.twig',[
                'evenement' => $evenement,
                'inscrits' => $inscrits,

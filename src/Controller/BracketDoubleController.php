@@ -72,14 +72,18 @@ class BracketDoubleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('bracket_double_index', [
-                'id' => $bracketDouble->getId(),
+            return $this->redirectToRoute('evenement_show', [
+                'id' => $bracketDouble->getTournoi()->getId(),
             ]);
         }
 
+        $inscrits = $bracketDouble->getTournoi()->getInscrits();
         return $this->render('bracket_double/edit.html.twig', [
             'bracket_double' => $bracketDouble,
+            'inscrits' => $inscrits,
             'form' => $form->createView(),
+            'nbTourLooser' =>$bracketDouble->nbTourPerdant(),
+            'nbTour' => $bracketDouble->nbTour(),
         ]);
     }
 

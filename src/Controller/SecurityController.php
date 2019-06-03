@@ -62,7 +62,7 @@ class SecurityController extends AbstractController
             $url = $this->generateUrl('app_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
 
             $message = (new \Swift_Message('FIFO Mot de passe Oublié'))
-                ->setFrom('legretquentin@yahoo.fr')
+                ->setFrom('noreply@fifo.fr')
                 ->setTo($user->getEmail())
                 ->setBody(
                     " voici le token pour reseter votre mot de passe : " . $url,
