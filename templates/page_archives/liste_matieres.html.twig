@@ -1,17 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}liste matieres!{% endblock %}
+{% block title %}Matieres{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Liste Matieres ✅</h1>
+<div class="container">
 
-    <table class="table">
+    <table class="table table-dark">
+      <tbody>
         {% for matiere in matieres %}
             <tr>
                 <td><a href="{{ path('matiere', {'slugCategorie': slugCategorie,'slugMatiere': matiere.slug}) }}">{{matiere.titre}}</a></td>
@@ -21,6 +17,7 @@
                 <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
+      </tbody>
     </table>
 </div>
 {% endblock %}
