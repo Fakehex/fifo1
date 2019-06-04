@@ -79,5 +79,15 @@ class BracketDouble extends Bracket
         return "double";
     }
 
+    public function nbTourPerdant(): ?int
+    {
+        $nbTourPerdant = 0;
+        foreach ($this->duelsPerdants as $duelP) {
+            if ($duelP->getTour() > $nbTourPerdant) {
+                $nbTourPerdant = $duelP->getTour();
+            }
+        }
+        return $nbTourPerdant;
+    }
 
 }

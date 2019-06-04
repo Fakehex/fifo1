@@ -237,9 +237,8 @@ class EvenementController extends AbstractController
          $bracket->setTourActuel($tourPrecedent + 1);
 
          if($bracket->getType() == "double"){
-             $duelsP = $bracket->getDuelsPerdants();
-             $tourPerdant = $bracket->getTourPerdant();
              $perdants = array();
+             $j=0;
          }
 
          $i = 0;
@@ -250,14 +249,15 @@ class EvenementController extends AbstractController
                  if($gagnant != null){
                      $gagnants[$i++] = $gagnant;
                      if($bracket->getType() == "double"){
-                         $perdants[$i++] = $duel->getPerdant();
+                         $perdants[$j++] = $duel->getPerdant();
+                         var_dump($duel->getPerdant()->getNom());
                      }
 
                  }
              }
          }
 
-         $n = 0; //
+         $n = 0;
          $nbGagnants = count($gagnants);
          foreach ($duels as $duel) {
              if($duel->getTour() == $tourPrecedent + 1 ){
@@ -266,7 +266,7 @@ class EvenementController extends AbstractController
                          $duel->setInscrit1($gagnants[$n++]);
                          $entityManager->persist($duel);
                      }else{
-                         $this->addFlash('danger', 'Pas assez de gagnants pour remplir le prochain tour');
+                         $this->addFlash('danger', 'Pas assez de (jpp) gagnants pour remplir le prochain tour');
                          return $this->render('evenement/show.html.twig', [
                              'evenement' => $evenement,
                              'inscrits' => $inscrits,
@@ -278,64 +278,67 @@ class EvenementController extends AbstractController
                          $duel->setInscrit2($gagnants[$n++]);
                          $entityManager->persist($duel);
                      }else{
-                         $this->addFlash('danger', 'Pas assez de gagnants pour remplir le prochain tour');
-                         return $this->render('evenement/show.html.twig', [
-                             'evenement' => $evenement,
-                             'inscrits' => $inscrits,
-                         ]);
-                     }
-                 }
-             }
-         }
+                         if(($bracket->getType() == "double") && ($duel->getTour() == $bracket->nbTour())){
+                             $this->addFlash('success', 'Finaliste Validé');
 
-         $n = 0;
-         if($bracket->getType() == "double"){
-             foreach($duelsP as $duelP) {
-                 if($duelP->getTour() == $tourPerdant){
-                     if($duelP->getInscrit1() == null){
-                         if($n < $nbGagnants){
-                             $duel->setInscrit1($perdants[$n++]);
-                             $entityManager->persist($duel);
                          }else{
-                             $this->addFlash('danger', 'Pas assez de perdants pour remplir le prochain tour');
-                             return $this->render('evenement/show.html.twig', [
-                                 'evenement' => $evenement,
-                                 'inscrits' => $inscrits,
-                                 //n'arrive normalement jamais
-                             ]);
-                         }
-                     }elseif($duel->getInscrit2() == null){
-                         if($n < $nbGagnants){
-                             $duel->setInscrit2($perdants[$n++]);
-                             $entityManager->persist($duel);
-                         }else{
-                             $this->addFlash('danger', 'Pas assez de perdants pour remplir le prochain tour');
+                             $this->addFlash('danger', 'Pas assez de gagnants pour remplir le prochain tour');
                              return $this->render('evenement/show.html.twig', [
                                  'evenement' => $evenement,
                                  'inscrits' => $inscrits,
                              ]);
                          }
-                     }else{
-                         if(($duelP->getTour() == $tourPerdant+1) && ($tourPerdant == 1)){
-                             if($duelP->getInscrit1() == null){
-                                 if($n < $nbGagnants){
-                                     $duel->setInscrit1($perdants[$n++]);
-                                     $entityManager->persist($duel);
-                                 }else{
-                                     $this->addFlash('danger', 'Pas assez de perdants pour remplir le prochain tour');
-                                     return $this->render('evenement/show.html.twig', [
-                                         'evenement' => $evenement,
-                                         'inscrits' => $inscrits,
-                                         //n'arrive normalement jamais
-                                     ]);
-                                 }
-                             }
-                         }
+
                      }
                  }
-
              }
          }
+
+
+         if($bracket->getType() == "double") {
+             $duelsP = $bracket->getDuelsPerdants();
+             $tourPerdant = $bracket->getTourPerdant();
+
+             $n = 0;
+             $nbPerdants = count($perdants);
+
+             foreach ($duelsP as $duelP) {
+
+                 if ($duelP->getTour() == $tourPerdant) {
+
+                     if ($duelP->getInscrit1() == null) {
+                         if ($n < $nbPerdants) {
+                             $duelP->setInscrit1($perdants[$n++]);
+                             $entityManager->persist($duelP);
+                         } else {
+                             $this->addFlash('danger', 'Pas assez de perdants pour remplir le prochain tour');
+                             return $this->render('evenement/show.html.twig', [
+                                 'evenement' => $evenement,
+                                 'inscrits' => $inscrits,
+                             ]);
+                         }
+                     }
+                     if ($duelP->getInscrit2() == null) {
+                         if ($n < $nbPerdants) {
+                             $duelP->setInscrit2($perdants[$n++]);
+                             $entityManager->persist($duelP);
+                         } else {
+                             $this->addFlash('danger', 'Pas assez de perdants pour remplir le prochain tour');
+                             return $this->render('evenement/show.html.twig', [
+                                 'evenement' => $evenement,
+                                 'inscrits' => $inscrits,
+                             ]);
+                         }
+                     }
+                 } elseif (($duelP->getTour() == $tourPerdant + 1) && ($n < $nbPerdants)) {
+                     if ($duelP->getInscrit1() == null) {
+                         $duelP->setInscrit1($perdants[$n++]);
+                         $entityManager->persist($duelP);
+                     }
+                 }
+             }
+         }
+
 
 
          $entityManager->persist($bracket);
@@ -467,7 +470,7 @@ class EvenementController extends AbstractController
         //Gestion bracket perdant
 
         //T1 Loser Bracket
-
+        $bracketDouble->setTourPerdant(1);
         $numTourPerdant = 1;
 
         $o = 2;
@@ -554,7 +557,6 @@ class EvenementController extends AbstractController
 
             if(($y/2 == $nbDuelsDernierTourPerdant) && ($y/2 != 2) )
             {
-                var_dump("NORMAL");
                 $y/=2;
                 $numTour++;
                 for($i = 0; $i < $y; ++$i){
@@ -579,9 +581,8 @@ class EvenementController extends AbstractController
             }else{
 
                 //Si nbMatch(Tour Actuel) = nbMatch(Tour Perdant Actuel), nbMatch == 1 et nb Match(Tour Perdant Precedant) != 1: Finale des perdants
-                if((($y == $nbDuelsDernierTourPerdant)&& $nbDuelsDernierTourPerdant == 2) && ($bracketDouble->getnbDuelsTour($numTourPerdant-1, $bracketDouble->getDuelsPerdants()) != 1) )
+                if((($y == $nbDuelsDernierTourPerdant)&& $nbDuelsDernierTourPerdant == 2) )
                 {
-                    var_dump("FIN");
                     //Finale des perdants
                     $numTourPerdant++;
                     $duel = new Duel();
@@ -618,7 +619,6 @@ class EvenementController extends AbstractController
                 else{
                     //Si nbMatch(Tour Actuel) < nbMatch(Tour Perdant Actuel): il y a match entre les joueurs du loser bracket puis on traite a nouveau
                     if($y/2 < $nbDuelsDernierTourPerdant) {
-                        var_dump("1V1 GARE DU NORD");
                         $numTourPerdant++;
                         for ($i = 0; $i < ($bracketDouble->getnbDuelsTour($numTourPerdant - 1, $bracketDouble->getDuelsPerdants()) / 2); ++$i) {
                             $duel = new Duel();
@@ -629,7 +629,6 @@ class EvenementController extends AbstractController
                         }
                     }else{
                         $y/=2;
-                        var_dump("FREEZE");
                         $numTour++;
                         for($i = 0; $i < $y; ++$i){
                             $duel = new Duel();
@@ -684,14 +683,68 @@ class EvenementController extends AbstractController
         $inscrits = $evenement->getInscrits();
         $duels = $bracket->getDuelsPerdants();
 
+        $tourPrecedent = $bracket->getTourPerdant();
 
+        $i = 0;
+        $gagnants = array();
+
+        if($tourPrecedent == $bracket->nbTourPerdant()){
+            foreach ($duels as $duel) {
+                if ($duel->getTour() == $tourPrecedent) {
+                    $gagnant = $duel->getGagnant();
+                    if ($gagnant != null) {
+                        $duelsGagnants = $bracket->getDuels();
+                        foreach ($duelsGagnants as $duelG) {
+                            if($duelG->getTour() == $bracket->getTourActuel()){
+                                $duelG->setInscrit2($gagnant);
+                                $entityManager->persist($duel);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            $bracket->setTourPerdant($tourPrecedent + 1);
+
+
+            foreach ($duels as $duel) {
+                if ($duel->getTour() == $tourPrecedent) {
+                    $gagnant = $duel->getGagnant();
+                    if ($gagnant != null) {
+                        $gagnants[$i++] = $gagnant;
+                        var_dump($gagnant->getNom());
+                    }
+                }
+            }
+
+            $n = 0;
+            $nbGagnants = count($gagnants);
+
+            foreach ($duels as $duel) {
+                if ($duel->getTour() == $tourPrecedent + 1) {
+                    if ($duel->getInscrit2() == null) {
+                        if ($n < $nbGagnants) {
+                            $duel->setInscrit2($gagnants[$n++]);
+                            $entityManager->persist($duel);
+                        }
+                    }
+                    if ($duel->getInscrit1() == null) {
+                        if ($n < $nbGagnants) {
+                            $duel->setInscrit1($gagnants[$n++]);
+                            $entityManager->persist($duel);
+                        }
+                    }
+                }
+            }
+        }
 
 
 
         $entityManager->persist($bracket);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Le looser backet est au tour '. $bracket->getTourPerdant());
+        $this->addFlash('success', 'Le looser bracket est au tour '. $bracket->getTourPerdant());
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
             'inscrits' => $inscrits,

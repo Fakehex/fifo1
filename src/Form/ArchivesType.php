@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Matiere;
-
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ArchivesType extends AbstractType
 {
@@ -19,7 +19,7 @@ class ArchivesType extends AbstractType
             ->add('titre')
             ->add('sujet', FileType::class, ['label' => 'Sujet (PDF file)', 'data_class' => null])
             ->add('matiere', EntityType::class,['class' => Matiere::class, 'choice_label' => 'titre'])
-            ->add('date')
+            ->add('date', DateType::class,['widget' => 'choice','attr' => array('class'=>'form-control')])
             ->add('secondeSession')
         ;
     }

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <h1>Contact</h1>
+
+    <div class="container">
+        <h1>Formulaire de contact</h1>
+        <div id="contactForm" class="mt-4">
+            {{ form_start(form)}}
+            <div class="row">
+                <div class="col-sm">{{ form_row(form.nomdefamille)}}</div>
+                <div class="col-sm">{{ form_row(form.prenom)}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm">{{ form_row(form.phone)}}</div>
+                <div class="col-sm">{{ form_row(form.email)}}</div>
+            </div>
+            {{ form_rest(form)}}
+            <div class="form-group">
+                <button class="btn btn-primary">Oui</button>
+            </div>
+            {{ form_end(form)}}
+        </div>
+    </div>
+
+{% endblock %}
