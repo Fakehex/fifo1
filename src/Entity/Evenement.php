@@ -47,7 +47,7 @@ class Evenement
     private $published_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Inscrit", mappedBy="evenement")
+     * @ORM\OneToMany(targetEntity="App\Entity\Inscrit", mappedBy="evenement", orphanRemoval=true)
      */
     private $inscrits;
 

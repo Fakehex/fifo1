@@ -39,7 +39,6 @@ class UserController extends AbstractController
      */
     public function editProfil(Request $request,EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader): Response
     {
-        var_dump($i);
         $user = $entityManager->getRepository(User::class)->findOneBy(['username' => $request->getSession()->get('username')]);
         $form = $this->createForm(ProfilType::class, $user);
         $formPicture = $this->createForm(PictureType::class, $user);

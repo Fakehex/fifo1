@@ -14,12 +14,12 @@ class Equipe extends Inscrit
 {
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Joueur", mappedBy="equipe")
+     * @ORM\OneToMany(targetEntity="App\Entity\Joueur", mappedBy="equipe", orphanRemoval=true)
      */
     private $Joueurs;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Joueur", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Joueur", cascade={"remove"}, orphanRemoval=true)
      */
     private $leader;
 

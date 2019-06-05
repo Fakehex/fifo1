@@ -42,7 +42,7 @@ class Inscrit
     private $evenement;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="inscrit1")
+     * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="inscrit1", orphanRemoval=true)
      */
     private $duels;
 

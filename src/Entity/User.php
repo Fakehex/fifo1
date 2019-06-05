@@ -231,7 +231,7 @@ class User implements UserInterface
     private $statut;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Joueur", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Joueur", mappedBy="user", orphanRemoval=true)
      */
     private $joueurs;
 
