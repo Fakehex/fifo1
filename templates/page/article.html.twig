@@ -3,9 +3,11 @@
 {% block title %}Page{% endblock %}
 
 {% block body %}
+  <div class="container m-3">
     <h1>{{ page.titre }}</h1>
-
-    {{ page.texte | raw }}
-
+      <div class="container ml-3 mr-3">
+        {{ page.texte | raw }}
+      </div>
+  </div>
 
 {% endblock %}
