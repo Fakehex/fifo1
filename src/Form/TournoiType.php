@@ -20,6 +20,8 @@ class TournoiType extends AbstractType
             ->add('date')
             ->add('salle')
             ->add('published_at')
+            ->add('inscriptionOuverte')
+
         ;
     }
 

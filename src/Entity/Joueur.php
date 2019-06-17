@@ -12,11 +12,13 @@ class Joueur extends Inscrit
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="joueurs")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Equipe", inversedBy="Joueurs")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Equipe", inversedBy="Joueurs",cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $equipe;
 

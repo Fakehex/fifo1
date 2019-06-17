@@ -18,11 +18,13 @@ class Duel
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Inscrit", inversedBy="duels")
+     * @ORM\JoinColumn(name="inscrit_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $inscrit1;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Inscrit")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Inscrit", inversedBy="duels")
+     * @ORM\JoinColumn(name="inscrit_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $inscrit2;
 

@@ -66,6 +66,11 @@ class Evenement
      */
     private $Salle;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $inscriptionOuverte;
+
     public function __construct()
     {
         $this->inscrits = new ArrayCollection();
@@ -191,5 +196,17 @@ class Evenement
         return $this;
     }
 
-  
+    public function getInscriptionOuverte(): ?bool
+    {
+        return $this->inscriptionOuverte;
+    }
+
+    public function setInscriptionOuverte(bool $inscriptionOuverte): self
+    {
+        $this->inscriptionOuverte = $inscriptionOuverte;
+
+        return $this;
+    }
+
+
 }

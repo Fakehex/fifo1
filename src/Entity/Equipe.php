@@ -19,7 +19,7 @@ class Equipe extends Inscrit
     private $Joueurs;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Joueur", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Joueur", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $leader;
 

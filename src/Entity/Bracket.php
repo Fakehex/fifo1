@@ -26,7 +26,7 @@ class Bracket
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="bracket")
+     * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="bracket", orphanRemoval=true)
      */
     protected $duels;
 
@@ -132,7 +132,7 @@ class Bracket
         return $nbTour;
     }
 
-    
+
 
 
 }

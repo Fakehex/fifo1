@@ -16,7 +16,7 @@ class BracketDouble extends Bracket
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="bracketDouble")
+     * @ORM\OneToMany(targetEntity="App\Entity\Duel", mappedBy="bracketDouble",orphanRemoval=true)
      */
     private $duelsPerdants;
 
