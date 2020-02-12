@@ -56,7 +56,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\File(
      *     maxSize = "8M",
      *     mimeTypes = {"image/jpeg", "image/png"},
